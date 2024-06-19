@@ -13,13 +13,13 @@ from PIL import Image
 # In[93]:
 
 
-df1 = pd.read_csv('https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_18JUN.csv')
+df1 = pd.read_csv('https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_18JUN.csv?raw=true')
 
 
 # In[94]:
 
 
-df2 = pd.read_excel('https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA.xlsx')
+df2 = pd.read_excel('https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA.xlsx?raw=true')
 
 
 # In[95]:
@@ -73,7 +73,7 @@ def display_dataframe(df):
 st.title("News Dashboard")
 
 # Sidebar with collapsible section for RBI News
-st.sidebar.image(add_logo(logo_path="PNBLogo.png", width=175, height=85), use_column_width=True)
+st.sidebar.image(add_logo(logo_path="https://github.com/bipins-hopstack/pnb_news_app/blob/main/PNBLogo.png?raw=true", width=175, height=85), use_column_width=True)
 st.sidebar.markdown('## RBI SEBI IRDAI News 14th June to 18th June 2024')
 
 # Radio button to select the news category
