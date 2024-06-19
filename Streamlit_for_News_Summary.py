@@ -13,13 +13,13 @@ from PIL import Image
 # In[93]:
 
 
-df1 = pd.read_csv(r'RBI_18JUN.csv')
+df1 = pd.read_csv('RBI_18JUN.csv')
 
 
 # In[94]:
 
 
-df2 = pd.read_excel(r'SEBI_PFRDA.xlsx')
+df2 = pd.read_excel('SEBI_PFRDA.xlsx')
 
 
 # In[95]:
