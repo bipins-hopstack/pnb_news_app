@@ -20,7 +20,7 @@ df1 = pd.read_csv(url1)
 # In[94]:
 
 url2='https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA.xlsx?raw=true'
-df2 = pd.read_excel(url1)
+df2 = pd.read_excel(url2)
 
 
 # In[95]:
