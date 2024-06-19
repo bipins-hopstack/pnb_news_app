@@ -80,7 +80,7 @@ def display_dataframe(df):
 st.title("News Dashboard")
 
 # Sidebar with collapsible section for RBI News
-st.sidebar.image(add_logo(logo_path=img, width=175, height=85), use_column_width=True)
+# st.sidebar.image(add_logo(logo_path=img, width=175, height=85), use_column_width=True)
 st.sidebar.markdown('## RBI SEBI IRDAI News 14th June to 18th June 2024')
 
 # Radio button to select the news category
