@@ -8,6 +8,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
 from PIL import Image
+import requests
 
 
 # In[93]:
