@@ -12,14 +12,15 @@ from PIL import Image
 
 # In[93]:
 
+url1 = 'https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_18JUN.csv?raw=true'
+df1 = pd.read_csv(url1)
 
-df1 = pd.read_csv('https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_18JUN.csv?raw=true')
 
 
 # In[94]:
 
-
-df2 = pd.read_excel('https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA.xlsx?raw=true')
+url2='https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA.xlsx?raw=true'
+df2 = pd.read_excel(url1)
 
 
 # In[95]:
