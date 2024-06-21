@@ -13,7 +13,7 @@ from PIL import Image
 # In[42]:
 
 
-df1 = pd.read_csv("https://raw.githubusercontent.com/bipins-hopstack/pnb_news_app/main/RBI_21JUN.csv?raw=true")
+df1 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_21JUN.csv?raw=true")
 
 
 # In[43]:
