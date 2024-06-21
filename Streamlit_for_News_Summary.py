@@ -13,19 +13,19 @@ from PIL import Image
 # In[42]:
 
 
-df1 = pd.read_excel(r'D:\Shekhar\Daily\June2024\21.06.2024\RBI_21JUN.xlsx')
+df1 = pd.read_excel('https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_21JUN.csv?raw=true')
 
 
 # In[43]:
 
 
-df2 = pd.read_excel(r'D:\Shekhar\Daily\June2024\21.06.2024\SEBI_PFRDA_21JUN.xlsx')
+df2 = pd.read_excel('https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA_21JUN.csv?raw=true')
 
 
 # In[44]:
 
 
-df3 = pd.read_excel(r'D:\Shekhar\Daily\June2024\21.06.2024\PIB_21JUN.xlsx')
+df3 = pd.read_excel('https://github.com/bipins-hopstack/pnb_news_app/blob/main/PIB_21JUN.csv?raw=true')
 
 
 # In[45]:
