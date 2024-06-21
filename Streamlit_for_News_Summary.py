@@ -13,7 +13,7 @@ from io import BytesIO
 
 url = 'https://github.com/bipins-hopstack/pnb_news_app/blob/main/PNBLogo.png?raw=true'
 response = requests.get(url)
-img = Image.open(BytesIO(response.content))
+#img = Image.open(BytesIO(response.content))
 
 # In[93]:
 
