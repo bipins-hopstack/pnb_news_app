@@ -13,19 +13,19 @@ from PIL import Image
 # In[42]:
 
 
-df1 = pd.read_csv('https://raw.githubusercontent.com/bipins-hopstack/pnb_news_app/main/RBI_21JUN.csv?raw=true')
+df1 = pd.read_csv("https://raw.githubusercontent.com/bipins-hopstack/pnb_news_app/main/RBI_21JUN.csv?raw=true")
 
 
 # In[43]:
 
 
-df2 = pd.read_csv('https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA_21JUN.csv?raw=true')
+df2 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA_21JUN.csv?raw=true")
 
 
 # In[44]:
 
 
-df3 = pd.read_csv('https://github.com/bipins-hopstack/pnb_news_app/blob/main/PIB_21JUN.csv?raw=true')
+df3 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/PIB_21JUN.csv?raw=true")
 
 
 # In[45]:
