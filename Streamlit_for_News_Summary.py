@@ -13,7 +13,7 @@ from PIL import Image
 # In[42]:
 
 
-df1 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_21JUN.csv?raw=true")
+df1 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI.csv?raw=true")
 
 
 # In[43]:
@@ -25,7 +25,7 @@ df2 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEB
 # In[44]:
 
 
-df3 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/PIB_21JUN.csv?raw=true")
+df3 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/PIB.csv?raw=true")
 
 
 # In[45]:
@@ -74,7 +74,7 @@ st.title("News Dashboard")
 
 # Sidebar with collapsible section for RBI News
 st.sidebar.image(add_logo(logo_path="PNBLogo.png", width=175, height=85), use_column_width=True)
-st.sidebar.markdown('## NEWS - RBI/SEBI/IRDAI/PIB <span style="font-size: medium">(19th June to 21st June 2024)</span>', unsafe_allow_html=True)
+st.sidebar.markdown('## NEWS - RBI/SEBI/IRDAI/PIB <span style="font-size: medium">24th June 2024</span>', unsafe_allow_html=True)
 
 # Radio button to select the news category
 news_category = st.sidebar.radio(
