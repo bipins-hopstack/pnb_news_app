@@ -81,16 +81,20 @@ elif news_category == 'PIB News':
 if news_category == 'RBI News':
     if news_option == 'Gist of the News':
         st.header("Gist of the News")
-        st.write(rbi_gist)
-        if st.button("Read Aloud"):
+        if st.button("Read Aloud Gist"):
             text_to_speech(rbi_gist)
+        st.write(rbi_gist)
     elif news_option == 'News Headings with Summary':
         st.header("News Headings with Summary")
         for heading, summary in zip(df1['Headings'], df1['Summary']):
-            st.markdown(f"•  **{heading}**")
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                st.markdown(f"•  **{heading}**")
+            with col2:
+                if st.button(f"Read Aloud", key=f"rbi_{heading}"):
+                    text_to_speech(summary)
             st.write(summary)
-            if st.button(f"Read Aloud: {heading}"):
-                text_to_speech(summary)
+            st.markdown("---")
     elif news_option == 'News Heading with URLs':
         st.header("News Heading with URLs")
         display_dataframe(df1)
@@ -98,16 +102,20 @@ if news_category == 'RBI News':
 elif news_category == 'SEBI & IRDAI News':
     if news_option == 'Gist of the News':
         st.header("Gist of the News")
-        st.write(sebi_gist)
-        if st.button("Read Aloud"):
+        if st.button("Read Aloud Gist"):
             text_to_speech(sebi_gist)
+        st.write(sebi_gist)
     elif news_option == 'News Headings with Summary':
         st.header("News Headings with Summary")
         for heading, summary in zip(df2['Headings'], df2['Summary']):
-            st.markdown(f"•  **{heading}**")
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                st.markdown(f"•  **{heading}**")
+            with col2:
+                if st.button(f"Read Aloud", key=f"sebi_{heading}"):
+                    text_to_speech(summary)
             st.write(summary)
-            if st.button(f"Read Aloud: {heading}"):
-                text_to_speech(summary)
+            st.markdown("---")
     elif news_option == 'News Headings with URLs':
         st.header("News Headings with URLs")
         display_dataframe(df2)
@@ -115,16 +123,20 @@ elif news_category == 'SEBI & IRDAI News':
 elif news_category == 'PIB News':
     if news_option == 'Gist of the News':
         st.header("Gist of the News")
-        st.write(pib_gist)
-        if st.button("Read Aloud"):
+        if st.button("Read Aloud Gist"):
             text_to_speech(pib_gist)
+        st.write(pib_gist)
     elif news_option == 'News Headings with Summary':
         st.header("News Headings with Summary")
         for heading, summary in zip(df3['Headings'], df3['Summary']):
-            st.markdown(f"•  **{heading}**")
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                st.markdown(f"•  **{heading}**")
+            with col2:
+                if st.button(f"Read Aloud", key=f"pib_{heading}"):
+                    text_to_speech(summary)
             st.write(summary)
-            if st.button(f"Read Aloud: {heading}"):
-                text_to_speech(summary)
+            st.markdown("---")
     elif news_option == 'News Headings with URLs':
         st.header("News Headings with URLs")
         display_dataframe(df3)
