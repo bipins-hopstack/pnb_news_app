@@ -3,9 +3,12 @@ import pandas as pd
 from datetime import datetime, timedelta
 from PIL import Image
 from gtts import gTTS
-import os
 import base64
 from io import BytesIO
+
+# Initialize session state
+if 'audio_data' not in st.session_state:
+    st.session_state.audio_data = {}
 
 # Import existing dataframes
 df1 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI.csv?raw=true")
@@ -27,45 +30,48 @@ def display_dataframe(df):
         st.markdown(f"•  **{row['Headings']}**")
         st.markdown(f"[Click Here to access News URL]({row['Link']})")
 
-def text_to_speech(text):
-    tts = gTTS(text=text, lang='en')
-    mp3_fp = BytesIO()
-    tts.write_to_fp(mp3_fp)
-    mp3_fp.seek(0)
-    return mp3_fp.getvalue()
-
-def display_audio_player(audio, key):
-    audio_base64 = base64.b64encode(audio).decode()
+def text_to_speech(text, key):
+    if key not in st.session_state.audio_data:
+        tts = gTTS(text=text, lang='en')
+        mp3_fp = BytesIO()
+        tts.write_to_fp(mp3_fp)
+        mp3_fp.seek(0)
+        audio_bytes = mp3_fp.read()
+        b64 = base64.b64encode(audio_bytes).decode()
+        st.session_state.audio_data[key] = b64
+    else:
+        b64 = st.session_state.audio_data[key]
     
-    st.markdown(f"""
-    <div id="audio-container-{key}">
-        <button id="play-{key}">Play</button>
-        <button id="stop-{key}" style="display:none;">Stop</button>
-    </div>
-    <script>
-        var audio_{key} = new Audio("data:audio/mp3;base64,{audio_base64}");
-        var playButton_{key} = document.getElementById("play-{key}");
-        var stopButton_{key} = document.getElementById("stop-{key}");
-        
-        playButton_{key}.onclick = function() {{
-            audio_{key}.play();
-            playButton_{key}.style.display = "none";
-            stopButton_{key}.style.display = "inline-block";
-        }};
-        
-        stopButton_{key}.onclick = function() {{
-            audio_{key}.pause();
-            audio_{key}.currentTime = 0;
-            playButton_{key}.style.display = "inline-block";
-            stopButton_{key}.style.display = "none";
-        }};
-        
-        audio_{key}.onended = function() {{
-            playButton_{key}.style.display = "inline-block";
-            stopButton_{key}.style.display = "none";
-        }};
-    </script>
-    """, unsafe_allow_html=True)
+    html_string = f"""
+        <audio id="audio-{key}" style="display:none">
+            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+        </audio>
+        <button id="play-{key}" onclick="playAudio('{key}')">Play</button>
+        <button id="stop-{key}" onclick="stopAudio('{key}')" style="display:none">Stop</button>
+        <script>
+            var audio_{key} = document.getElementById("audio-{key}");
+            var playBtn_{key} = document.getElementById("play-{key}");
+            var stopBtn_{key} = document.getElementById("stop-{key}");
+
+            function playAudio(key) {{
+                audio_{key}.play();
+                playBtn_{key}.style.display = "none";
+                stopBtn_{key}.style.display = "inline-block";
+            }}
+
+            function stopAudio(key) {{
+                audio_{key}.pause();
+                audio_{key}.currentTime = 0;
+                playBtn_{key}.style.display = "inline-block";
+                stopBtn_{key}.style.display = "none";
+            }}
+
+            audio_{key}.onended = function() {{
+                stopAudio('{key}');
+            }};
+        </script>
+    """
+    st.components.v1.html(html_string, height=50)
 
 # Streamlit UI
 st.title("News Dashboard")
@@ -102,15 +108,13 @@ elif news_category == 'PIB News':
 if news_category == 'RBI News':
     if news_option == 'Gist of the News':
         st.header("Gist of the News")
-        audio = text_to_speech(rbi_gist)
-        display_audio_player(audio, "rbi_gist")
+        text_to_speech(rbi_gist, "rbi_gist")
         st.write(rbi_gist)
     elif news_option == 'News Headings with Summary':
         st.header("News Headings with Summary")
         for i, (heading, summary) in enumerate(zip(df1['Headings'], df1['Summary'])):
             st.markdown(f"•  **{heading}**")
-            audio = text_to_speech(summary)
-            display_audio_player(audio, f"rbi_{i}")
+            text_to_speech(summary, f"rbi_{i}")
             st.write(summary)
             st.markdown("---")
     elif news_option == 'News Heading with URLs':
@@ -120,15 +124,13 @@ if news_category == 'RBI News':
 elif news_category == 'SEBI & IRDAI News':
     if news_option == 'Gist of the News':
         st.header("Gist of the News")
-        audio = text_to_speech(sebi_gist)
-        display_audio_player(audio, "sebi_gist")
+        text_to_speech(sebi_gist, "sebi_gist")
         st.write(sebi_gist)
     elif news_option == 'News Headings with Summary':
         st.header("News Headings with Summary")
         for i, (heading, summary) in enumerate(zip(df2['Headings'], df2['Summary'])):
             st.markdown(f"•  **{heading}**")
-            audio = text_to_speech(summary)
-            display_audio_player(audio, f"sebi_{i}")
+            text_to_speech(summary, f"sebi_{i}")
             st.write(summary)
             st.markdown("---")
     elif news_option == 'News Headings with URLs':
@@ -138,15 +140,13 @@ elif news_category == 'SEBI & IRDAI News':
 elif news_category == 'PIB News':
     if news_option == 'Gist of the News':
         st.header("Gist of the News")
-        audio = text_to_speech(pib_gist)
-        display_audio_player(audio, "pib_gist")
+        text_to_speech(pib_gist, "pib_gist")
         st.write(pib_gist)
     elif news_option == 'News Headings with Summary':
         st.header("News Headings with Summary")
         for i, (heading, summary) in enumerate(zip(df3['Headings'], df3['Summary'])):
             st.markdown(f"•  **{heading}**")
-            audio = text_to_speech(summary)
-            display_audio_player(audio, f"pib_{i}")
+            text_to_speech(summary, f"pib_{i}")
             st.write(summary)
             st.markdown("---")
     elif news_option == 'News Headings with URLs':
