@@ -5,8 +5,6 @@ from PIL import Image
 from gtts import gTTS
 import os
 import base64
-from pydub import AudioSegment
-from io import BytesIO
 
 # Import existing dataframes
 df1 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI.csv?raw=true")
@@ -28,53 +26,25 @@ def display_dataframe(df):
         st.markdown(f"•  **{row['Headings']}**")
         st.markdown(f"[Click Here to access News URL]({row['Link']})")
 
-def text_to_speech_chunks(text, chunk_length=100):
+def text_to_speech(text):
     tts = gTTS(text=text, lang='en')
-    mp3_fp = BytesIO()
-    tts.write_to_fp(mp3_fp)
-    mp3_fp.seek(0)
-    audio = AudioSegment.from_mp3(mp3_fp)
+    tts.save("speech.mp3")
     
-    chunk_length_ms = chunk_length * 1000  # pydub works in milliseconds
-    chunks = [audio[i:i+chunk_length_ms] for i in range(0, len(audio), chunk_length_ms)]
+    # Read the saved audio file
+    with open("speech.mp3", "rb") as f:
+        audio_bytes = f.read()
     
-    return [chunk.export(format="mp3").read() for chunk in chunks]
-
-def display_audio_player(audio_chunks, key):
-    audio_base64 = [base64.b64encode(chunk).decode() for chunk in audio_chunks]
+    # Encode the audio file to base64
+    audio_base64 = base64.b64encode(audio_bytes).decode()
     
-    st.markdown(f"""
-    <div id="audio-{key}"></div>
-    <button id="play-pause-{key}">Play/Pause</button>
-    <script>
-        var audioChunks_{key} = {audio_base64};
-        var currentChunk_{key} = 0;
-        var audio_{key} = new Audio("data:audio/mp3;base64," + audioChunks_{key}[0]);
-        var playing_{key} = false;
-        
-        document.getElementById("play-pause-{key}").onclick = function() {{
-            if (playing_{key}) {{
-                audio_{key}.pause();
-                playing_{key} = false;
-            }} else {{
-                audio_{key}.play();
-                playing_{key} = true;
-            }}
-        }};
-        
-        audio_{key}.onended = function() {{
-            currentChunk_{key}++;
-            if (currentChunk_{key} < audioChunks_{key}.length) {{
-                audio_{key}.src = "data:audio/mp3;base64," + audioChunks_{key}[currentChunk_{key}];
-                audio_{key}.play();
-            }} else {{
-                playing_{key} = false;
-                currentChunk_{key} = 0;
-                audio_{key}.src = "data:audio/mp3;base64," + audioChunks_{key}[0];
-            }}
-        }};
-    </script>
-    """, unsafe_allow_html=True)
+    # Create an HTML audio player
+    audio_player = f'<audio autoplay="true" src="data:audio/mp3;base64,{audio_base64}">'
+    
+    # Display the audio player
+    st.markdown(audio_player, unsafe_allow_html=True)
+    
+    # Remove the temporary audio file
+    os.remove("speech.mp3")
 
 # Streamlit UI
 st.title("News Dashboard")
@@ -111,15 +81,18 @@ elif news_category == 'PIB News':
 if news_category == 'RBI News':
     if news_option == 'Gist of the News':
         st.header("Gist of the News")
-        audio_chunks = text_to_speech_chunks(rbi_gist)
-        display_audio_player(audio_chunks, "rbi_gist")
+        if st.button("Read Aloud Gist"):
+            text_to_speech(rbi_gist)
         st.write(rbi_gist)
     elif news_option == 'News Headings with Summary':
         st.header("News Headings with Summary")
-        for i, (heading, summary) in enumerate(zip(df1['Headings'], df1['Summary'])):
-            st.markdown(f"•  **{heading}**")
-            audio_chunks = text_to_speech_chunks(summary)
-            display_audio_player(audio_chunks, f"rbi_{i}")
+        for heading, summary in zip(df1['Headings'], df1['Summary']):
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                st.markdown(f"•  **{heading}**")
+            with col2:
+                if st.button(f"Read Aloud", key=f"rbi_{heading}"):
+                    text_to_speech(summary)
             st.write(summary)
             st.markdown("---")
     elif news_option == 'News Heading with URLs':
@@ -129,15 +102,18 @@ if news_category == 'RBI News':
 elif news_category == 'SEBI & IRDAI News':
     if news_option == 'Gist of the News':
         st.header("Gist of the News")
-        audio_chunks = text_to_speech_chunks(sebi_gist)
-        display_audio_player(audio_chunks, "sebi_gist")
+        if st.button("Read Aloud Gist"):
+            text_to_speech(sebi_gist)
         st.write(sebi_gist)
     elif news_option == 'News Headings with Summary':
         st.header("News Headings with Summary")
-        for i, (heading, summary) in enumerate(zip(df2['Headings'], df2['Summary'])):
-            st.markdown(f"•  **{heading}**")
-            audio_chunks = text_to_speech_chunks(summary)
-            display_audio_player(audio_chunks, f"sebi_{i}")
+        for heading, summary in zip(df2['Headings'], df2['Summary']):
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                st.markdown(f"•  **{heading}**")
+            with col2:
+                if st.button(f"Read Aloud", key=f"sebi_{heading}"):
+                    text_to_speech(summary)
             st.write(summary)
             st.markdown("---")
     elif news_option == 'News Headings with URLs':
@@ -147,15 +123,18 @@ elif news_category == 'SEBI & IRDAI News':
 elif news_category == 'PIB News':
     if news_option == 'Gist of the News':
         st.header("Gist of the News")
-        audio_chunks = text_to_speech_chunks(pib_gist)
-        display_audio_player(audio_chunks, "pib_gist")
+        if st.button("Read Aloud Gist"):
+            text_to_speech(pib_gist)
         st.write(pib_gist)
     elif news_option == 'News Headings with Summary':
         st.header("News Headings with Summary")
-        for i, (heading, summary) in enumerate(zip(df3['Headings'], df3['Summary'])):
-            st.markdown(f"•  **{heading}**")
-            audio_chunks = text_to_speech_chunks(summary)
-            display_audio_player(audio_chunks, f"pib_{i}")
+        for heading, summary in zip(df3['Headings'], df3['Summary']):
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                st.markdown(f"•  **{heading}**")
+            with col2:
+                if st.button(f"Read Aloud", key=f"pib_{heading}"):
+                    text_to_speech(summary)
             st.write(summary)
             st.markdown("---")
     elif news_option == 'News Headings with URLs':
