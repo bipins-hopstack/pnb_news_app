@@ -84,18 +84,7 @@ def generate_full_pdf(df1, df2, df3):
         print(f"Error generating PDF: {e}")
         return None  # Return None if PDF generation fails
 
-# Add this to your Streamlit app's sidebar
-if st.sidebar.button('Download Full Report'):
-    pdf = generate_full_pdf(df1, df2, df3)
-    if pdf:
-        st.sidebar.download_button(
-            label="Click here to download the PDF",
-            data=pdf,
-            file_name="full_news_report.pdf",
-            mime="application/pdf"
-        )
-    else:
-        st.sidebar.error("Failed to generate PDF. Please try again.")
+
     
 def text_to_speech(text, key):
     if key not in st.session_state.audio_data:
@@ -221,11 +210,15 @@ elif news_category == 'PIB News':
         st.header("News Headings with URLs")
         display_dataframe(df3)
 
+# Add this to your Streamlit app's sidebar
 if st.sidebar.button('Download Full Report'):
     pdf = generate_full_pdf(df1, df2, df3)
-    st.sidebar.download_button(
-        label="Click here to download the PDF",
-        data=pdf,
-        file_name="full_news_report.pdf",
-        mime="application/pdf"
-    )
+    if pdf:
+        st.sidebar.download_button(
+            label="Click here to download the PDF",
+            data=pdf,
+            file_name="full_news_report.pdf",
+            mime="application/pdf"
+        )
+    else:
+        st.sidebar.error("Failed to generate PDF. Please try again.")
