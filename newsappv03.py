@@ -11,6 +11,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_JUSTIFY
+from reportlab.lib.pagesizes import A4, portrait
 
 # Initialize session state
 if 'audio_data' not in st.session_state:
@@ -38,7 +39,7 @@ def display_dataframe(df):
 
 def generate_full_pdf(df1, df2, df3):
     buffer = io.BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize='A4')
+    doc = SimpleDocTemplate(buffer, pagesize=A4)
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Justify', alignment='TA_JUSTIFY'))
 
