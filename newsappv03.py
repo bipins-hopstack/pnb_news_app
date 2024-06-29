@@ -12,6 +12,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_JUSTIFY
 from reportlab.lib.pagesizes import A4, portrait
+from reportlab.platypus import PageBreak
 
 # Initialize session state
 if 'audio_data' not in st.session_state:
