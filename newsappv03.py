@@ -222,7 +222,7 @@ if news_category == 'RBI News':
         st.header("News Headings with Summary")
         for i, (heading, summary) in enumerate(zip(df1['Headings'], df1['Summary'])):
             st.markdown(f"•  **{heading}**")
-            display_dataframe(df3)
+            display_dataframe(df1)
             text_to_speech(summary, f"rbi_{i}")
             st.write(summary)
             st.markdown("---")
@@ -239,7 +239,7 @@ elif news_category == 'SEBI & IRDAI News':
         st.header("News Headings with Summary")
         for i, (heading, summary) in enumerate(zip(df2['Headings'], df2['Summary'])):
             st.markdown(f"•  **{heading}**")
-            display_dataframe(df3)
+            display_dataframe(df2)
             text_to_speech(summary, f"sebi_{i}")
             st.write(summary)
             st.markdown("---")
