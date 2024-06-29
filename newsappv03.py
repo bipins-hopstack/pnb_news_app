@@ -38,14 +38,14 @@ def display_dataframe(df):
 
 def generate_full_pdf(df1, df2, df3):
     buffer = io.BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=A4)
+    doc = SimpleDocTemplate(buffer, pagesize='A4')
     styles = getSampleStyleSheet()
-    styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
+    styles.add(ParagraphStyle(name='Justify', alignment='TA_JUSTIFY'))
 
     def create_category_content(df, category_name):
         content = []
         # Category Title
-        title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment=TA_CENTER, textColor=colors.darkblue)
+        title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment='TA_CENTER', textColor=colors.darkblue)
         content.append(Paragraph(category_name, title_style))
         content.append(Spacer(1, 20))
 
