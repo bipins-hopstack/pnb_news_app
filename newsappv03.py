@@ -69,7 +69,7 @@ def generate_full_pdf(df1, df2, df3):
     story.extend(create_category_content(df2, "SEBI & IRDAI News"))
     story.extend(create_category_content(df3, "PIB News"))
     
-    doc.build(story)
+    #doc.build(story)
     #buffer.seek(0)
     return buffer
     
