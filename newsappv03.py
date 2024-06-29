@@ -61,15 +61,15 @@ def generate_full_pdf(df1, df2, df3):
 
         content.append(PageBreak())
         return content
-
-story = []
-story.extend(create_category_content(df1, "RBI News"))
-story.extend(create_category_content(df2, "SEBI & IRDAI News"))
-story.extend(create_category_content(df3, "PIB News"))
-
-doc.build(story)
-buffer.seek(0)
-return buffer
+    
+    story = []
+    story.extend(create_category_content(df1, "RBI News"))
+    story.extend(create_category_content(df2, "SEBI & IRDAI News"))
+    story.extend(create_category_content(df3, "PIB News"))
+    
+    doc.build(story)
+    buffer.seek(0)
+    return buffer
     
     
 def text_to_speech(text, key):
