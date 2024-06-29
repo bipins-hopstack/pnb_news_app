@@ -206,7 +206,7 @@ elif news_category == 'PIB News':
         ('Gist of the News', 'News Headings with Summary', 'News Headings with URLs')
     )
 elif news_category == 'RBI Notification':
-    st.dataframe(df4)
+    display_dataframe(df4)
         
     
     
