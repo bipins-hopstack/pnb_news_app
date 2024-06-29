@@ -84,35 +84,35 @@ def text_to_speech(text, key):
     else:
         b64 = st.session_state.audio_data[key]
         
-html_string = f"""
-    <audio id="audio-{key}" style="display:none">
-        <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-    </audio>
-    <button id="play-{key}" onclick="playAudio('{key}')">Play</button>
-    <button id="stop-{key}" onclick="stopAudio('{key}')" style="display:none">Stop</button>
-    <script>
-        var audio_{key} = document.getElementById("audio-{key}");
-        var playBtn_{key} = document.getElementById("play-{key}");
-        var stopBtn_{key} = document.getElementById("stop-{key}");
-
-        function playAudio(key) {{
-            audio_{key}.play();
-            playBtn_{key}.style.display = "none";
-            stopBtn_{key}.style.display = "inline-block";
-        }}
-
-        function stopAudio(key) {{
-            audio_{key}.pause();
-            audio_{key}.currentTime = 0;
-            playBtn_{key}.style.display = "inline-block";
-            stopBtn_{key}.style.display = "none";
-        }}
-
-        audio_{key}.onended = function() {{
-            stopAudio('{key}');
-        }};
-    </script>
-"""
+        html_string = f"""
+            <audio id="audio-{key}" style="display:none">
+                <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+            </audio>
+            <button id="play-{key}" onclick="playAudio('{key}')">Play</button>
+            <button id="stop-{key}" onclick="stopAudio('{key}')" style="display:none">Stop</button>
+            <script>
+                var audio_{key} = document.getElementById("audio-{key}");
+                var playBtn_{key} = document.getElementById("play-{key}");
+                var stopBtn_{key} = document.getElementById("stop-{key}");
+        
+                function playAudio(key) {{
+                    audio_{key}.play();
+                    playBtn_{key}.style.display = "none";
+                    stopBtn_{key}.style.display = "inline-block";
+                }}
+        
+                function stopAudio(key) {{
+                    audio_{key}.pause();
+                    audio_{key}.currentTime = 0;
+                    playBtn_{key}.style.display = "inline-block";
+                    stopBtn_{key}.style.display = "none";
+                }}
+        
+                audio_{key}.onended = function() {{
+                    stopAudio('{key}');
+                }};
+            </script>
+        """
 st.components.v1.html(html_string, height=50)
 
 # Streamlit UI
