@@ -7,12 +7,11 @@ import base64
 from io import BytesIO
 import io
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_JUSTIFY
-from reportlab.lib.pagesizes import A4, portrait
-from reportlab.platypus import PageBreak
+from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
+import unicodedata
 
 # Initialize session state
 if 'audio_data' not in st.session_state:
@@ -42,37 +41,61 @@ def generate_full_pdf(df1, df2, df3):
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4)
     styles = getSampleStyleSheet()
-    styles.add(ParagraphStyle(name='Justify', alignment='TA_JUSTIFY'))
+    styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
+
+    def clean_text(text):
+        # Remove any non-printable characters
+        return ''.join(ch for ch in text if unicodedata.category(ch)[0] != 'C')
 
     def create_category_content(df, category_name):
         content = []
         # Category Title
-        title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment='TA_CENTER', textColor=colors.darkblue)
-        content.append(Paragraph(category_name, title_style))
+        title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment=TA_CENTER, textColor=colors.darkblue)
+        content.append(Paragraph(clean_text(category_name), title_style))
         content.append(Spacer(1, 20))
 
         for _, row in df.iterrows():
-            # Article Heading
-            heading_style = ParagraphStyle('Heading2', parent=styles['Heading2'], textColor=colors.darkgreen)
-            content.append(Paragraph(row['Headings'], heading_style))
-            content.append(Spacer(1, 10))
-            
-            # Article Summary
-            content.append(Paragraph(row['Summary'], styles['Justify']))
-            content.append(Spacer(1, 20))
+            try:
+                # Article Heading
+                heading_style = ParagraphStyle('Heading2', parent=styles['Heading2'], textColor=colors.darkgreen)
+                content.append(Paragraph(clean_text(row['Headings']), heading_style))
+                content.append(Spacer(1, 10))
+                
+                # Article Summary
+                content.append(Paragraph(clean_text(row['Summary']), styles['Justify']))
+                content.append(Spacer(1, 20))
+            except Exception as e:
+                print(f"Error processing row: {e}")
+                continue  # Skip this row and continue with the next
 
         content.append(PageBreak())
         return content
-    
+
     story = []
-    story.extend(create_category_content(df1, "RBI News"))
-    story.extend(create_category_content(df2, "SEBI & IRDAI News"))
-    story.extend(create_category_content(df3, "PIB News"))
-    
-    doc.multiBuild(story)
-    buffer.seek(0)
-    return buffer
-    
+    try:
+        story.extend(create_category_content(df1, "RBI News"))
+        story.extend(create_category_content(df2, "SEBI & IRDAI News"))
+        story.extend(create_category_content(df3, "PIB News"))
+
+        doc.build(story)
+        buffer.seek(0)
+        return buffer
+    except Exception as e:
+        print(f"Error generating PDF: {e}")
+        return None  # Return None if PDF generation fails
+
+# Add this to your Streamlit app's sidebar
+if st.sidebar.button('Download Full Report'):
+    pdf = generate_full_pdf(df1, df2, df3)
+    if pdf:
+        st.sidebar.download_button(
+            label="Click here to download the PDF",
+            data=pdf,
+            file_name="full_news_report.pdf",
+            mime="application/pdf"
+        )
+    else:
+        st.sidebar.error("Failed to generate PDF. Please try again.")
     
 def text_to_speech(text, key):
     if key not in st.session_state.audio_data:
