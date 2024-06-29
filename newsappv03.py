@@ -54,15 +54,6 @@ def read_github_csv(url):
         print(f"All reading attempts failed. Error: {str(e)}")
         return None
 
-# Use the function
-url = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI.csv?raw=true"
-df1 = read_github_csv(url)
-
-if df1 is not None:
-    print(df1.head())
-else:
-    print("Failed to read the CSV file")
-
 
 # Import existing dataframes
 url1 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI.csv?raw=true"
@@ -71,9 +62,9 @@ url3 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/PIB.csv?raw=tr
 url4 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_NOTIFICATION.csv?raw=true"
 
 df1 = read_github_csv(url1)
-df2 = pd.read_csv(url2)
-df3 = pd.read_csv(url3)
-df4 = pd.read_csv(url4)
+df2 = read_github_csv(url2)
+df3 = read_github_csv(url3)
+df4 = read_github_csv(url4)
 
 rbi_gist = df1.iloc[0]['Gist']
 sebi_gist = df2.iloc[0]['Gist']
