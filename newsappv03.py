@@ -73,17 +73,17 @@ return buffer
     
     
 def text_to_speech(text, key):
-if key not in st.session_state.audio_data:
-    tts = gTTS(text=text, lang='en')
-    mp3_fp = BytesIO()
-    tts.write_to_fp(mp3_fp)
-    mp3_fp.seek(0)
-    audio_bytes = mp3_fp.read()
-    b64 = base64.b64encode(audio_bytes).decode()
-    st.session_state.audio_data[key] = b64
-else:
-    b64 = st.session_state.audio_data[key]
-    
+    if key not in st.session_state.audio_data:
+        tts = gTTS(text=text, lang='en')
+        mp3_fp = BytesIO()
+        tts.write_to_fp(mp3_fp)
+        mp3_fp.seek(0)
+        audio_bytes = mp3_fp.read()
+        b64 = base64.b64encode(audio_bytes).decode()
+        st.session_state.audio_data[key] = b64
+    else:
+        b64 = st.session_state.audio_data[key]
+        
 html_string = f"""
     <audio id="audio-{key}" style="display:none">
         <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
