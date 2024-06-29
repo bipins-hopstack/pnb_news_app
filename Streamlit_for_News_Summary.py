@@ -9,44 +9,18 @@ import pandas as pd
 from datetime import datetime, timedelta
 from PIL import Image
 
-
-# In[42]:
-
-
 df1 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI.csv?raw=true")
-
-
-# In[43]:
-
-
 df2 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA_21JUN.csv?raw=true")
-
-
-# In[44]:
-
-
 df3 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/PIB.csv?raw=true")
-
-
-# In[45]:
 
 
 rbi_gist = df1.iloc[0]['Gist']
 
-
-# In[46]:
-
-
 sebi_gist = df2.iloc[0]['Gist']
-
-
-# In[47]:
 
 
 pib_gist = df3.iloc[0]['Gist']
 
-
-# In[48]:
 
 
 def add_logo(logo_path, width, height):
@@ -55,8 +29,53 @@ def add_logo(logo_path, width, height):
     modified_logo = logo.resize((width, height))
     return modified_logo
 
+import io
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_JUSTIFY
 
-# In[49]:
+
+def generate_pdf(news_category, df):
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
+
+    story = []
+
+    # Add title
+    title_style = styles['Heading1']
+    title_style.textColor = colors.darkblue
+    story.append(Paragraph(f"{news_category} News", title_style))
+    story.append(Spacer(1, 12))
+
+    # Add content
+    for _, row in df.iterrows():
+        heading_style = styles['Heading2']
+        heading_style.textColor = colors.darkgreen
+        story.append(Paragraph(row['Headings'], heading_style))
+        story.append(Spacer(1, 6))
+        
+        story.append(Paragraph(row['Summary'], styles['Justify']))
+        story.append(Spacer(1, 12))
+
+    doc.build(story)
+    buffer.seek(0)
+    return buffer
+
+# Add this to your Streamlit app
+if st.button('Download PDF'):
+    pdf = generate_pdf(news_category, df)
+    st.download_button(
+        label="Click here to download the PDF",
+        data=pdf,
+        file_name=f"{news_category}_news.pdf",
+        mime="application/pdf"
+    )
+
+
 
 
 # Function to display dataframe with text wrap and hyperlinks
