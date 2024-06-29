@@ -189,7 +189,9 @@ elif news_category == 'PIB News':
     elif news_option == 'News Headings with URLs':
         st.header("News Headings with URLs")
         display_dataframe(df3)
-if st.sidebar.button('Do    pdf = generate_full_pdf(df1, df2, df3)
+
+if st.sidebar.button('Download Full Report'):
+    pdf = generate_full_pdf(df1, df2, df3)
     st.sidebar.download_button(
         label="Click here to download the PDF",
         data=pdf,
