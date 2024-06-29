@@ -113,7 +113,7 @@ def text_to_speech(text, key):
                 }};
             </script>
         """
-st.components.v1.html(html_string, height=50)
+        st.components.v1.html(html_string, height=50)
 
 # Streamlit UI
 st.title("News Dashboard")
