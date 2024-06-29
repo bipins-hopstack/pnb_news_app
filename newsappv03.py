@@ -80,7 +80,7 @@ def add_logo(logo_path, width, height):
 
 def display_dataframe(df):
     for i, row in df.iterrows():
-        st.markdown(f"•  **{row['Headings']}**")
+        #st.markdown(f"•  **{row['Headings']}**")
         st.markdown(f"[Click Here to access News URL]({row['Link']})")
 
 def generate_full_pdf(df1, df2, df3):
@@ -222,6 +222,7 @@ if news_category == 'RBI News':
         st.header("News Headings with Summary")
         for i, (heading, summary) in enumerate(zip(df1['Headings'], df1['Summary'])):
             st.markdown(f"•  **{heading}**")
+            display_dataframe(df3)
             text_to_speech(summary, f"rbi_{i}")
             st.write(summary)
             st.markdown("---")
@@ -238,6 +239,7 @@ elif news_category == 'SEBI & IRDAI News':
         st.header("News Headings with Summary")
         for i, (heading, summary) in enumerate(zip(df2['Headings'], df2['Summary'])):
             st.markdown(f"•  **{heading}**")
+            display_dataframe(df3)
             text_to_speech(summary, f"sebi_{i}")
             st.write(summary)
             st.markdown("---")
@@ -254,6 +256,7 @@ elif news_category == 'PIB News':
         st.header("News Headings with Summary")
         for i, (heading, summary) in enumerate(zip(df3['Headings'], df3['Summary'])):
             st.markdown(f"•  **{heading}**")
+            display_dataframe(df3)
             text_to_speech(summary, f"pib_{i}")
             st.write(summary)
             st.markdown("---")
