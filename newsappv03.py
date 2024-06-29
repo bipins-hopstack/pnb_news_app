@@ -206,10 +206,9 @@ elif news_category == 'PIB News':
         ('Gist of the News', 'News Headings with Summary', 'News Headings with URLs')
     )
 elif news_category == 'RBI Notification':
-    news_option = st.sidebar.radio(
-        "Select News Option",
-        ('Gist of the News', 'News Headings with Summary', 'News Headings with URLs')
     st.dataframe(df4)
+        
+    
     
 
 # Display selected news based on category and option
