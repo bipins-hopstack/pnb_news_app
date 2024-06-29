@@ -16,12 +16,64 @@ import unicodedata
 # Initialize session state
 if 'audio_data' not in st.session_state:
     st.session_state.audio_data = {}
+from io import StringIO
+
+def read_github_csv(url):
+    # List of encodings to try
+    encodings = ['utf-8', 'ISO-8859-1', 'latin1', 'cp1252']
+    
+    # First, get the raw content
+    response = requests.get(url)
+    if response.status_code != 200:
+        raise Exception(f"Failed to fetch the file. Status code: {response.status_code}")
+
+    content = response.content
+
+    # Try different encodings
+    for encoding in encodings:
+        try:
+            # Try to decode and read as CSV
+            decoded_content = content.decode(encoding)
+            df = pd.read_csv(StringIO(decoded_content))
+            print(f"Successfully read with encoding: {encoding}")
+            return df
+        except UnicodeDecodeError:
+            print(f"Failed with encoding: {encoding}")
+            continue
+        except pd.errors.ParserError:
+            print(f"Parser error with encoding: {encoding}")
+            continue
+
+    # If all attempts fail, try with 'replace' error handling
+    try:
+        decoded_content = content.decode('utf-8', errors='replace')
+        df = pd.read_csv(StringIO(decoded_content))
+        print("Read with 'replace' error handling")
+        return df
+    except Exception as e:
+        print(f"All reading attempts failed. Error: {str(e)}")
+        return None
+
+# Use the function
+url = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI.csv?raw=true"
+df1 = read_github_csv(url)
+
+if df1 is not None:
+    print(df1.head())
+else:
+    print("Failed to read the CSV file")
+
 
 # Import existing dataframes
-df1 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI.csv?raw=true",encoding='utf-8', errors='replace')
-df2 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA_21JUN.csv?raw=true",encoding='utf-8', errors='replace')
-df3 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/PIB.csv?raw=true",encoding='utf-8-sig')
-df4 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_NOTIFICATION.csv?raw=true",encoding='utf-8', errors='replace')
+url1 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI.csv?raw=true"
+url2 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA_21JUN.csv?raw=true"
+url3 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/PIB.csv?raw=true"
+url4 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_NOTIFICATION.csv?raw=true"
+
+df1 = read_github_csv(url1)
+df2 = pd.read_csv(url2)
+df3 = pd.read_csv(url3)
+df4 = pd.read_csv(url4)
 
 rbi_gist = df1.iloc[0]['Gist']
 sebi_gist = df2.iloc[0]['Gist']
