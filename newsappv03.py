@@ -18,10 +18,10 @@ if 'audio_data' not in st.session_state:
     st.session_state.audio_data = {}
 
 # Import existing dataframes
-df1 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI.csv?raw=true",encoding='utf-8-sig')
-df2 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA_21JUN.csv?raw=true",encoding='utf-8-sig')
+df1 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI.csv?raw=true",encoding='utf-8', errors='replace')
+df2 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA_21JUN.csv?raw=true",encoding='utf-8', errors='replace')
 df3 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/PIB.csv?raw=true",encoding='utf-8-sig')
-df4 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_NOTIFICATION.csv?raw=true",encoding='utf-8-sig')
+df4 = pd.read_csv("https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_NOTIFICATION.csv?raw=true",encoding='utf-8', errors='replace')
 
 rbi_gist = df1.iloc[0]['Gist']
 sebi_gist = df2.iloc[0]['Gist']
