@@ -35,20 +35,24 @@ def display_dataframe(df):
     for i, row in df.iterrows():
         st.markdown(f"•  **{row['Headings']}**")
         st.markdown(f"[Click Here to access News URL]({row['Link']})")
+
 def generate_full_pdf(df1, df2, df3):
     buffer = io.BytesIO()
-    doc = SimpleDocTem    styles = getSampleStyleSheet()
+    doc = SimpleDocTemplate(buffer, pagesize=A4)
+    styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
 
     def create_category_content(df, category_name):
         content = []
         # Category Title
-        title_style = ParagraphStyle('Title', parent=st        content.append(Paragraph(category_name, title_style))
+        title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment=TA_CENTER, textColor=colors.darkblue)
+        content.append(Paragraph(category_name, title_style))
         content.append(Spacer(1, 20))
 
         for _, row in df.iterrows():
             # Article Heading
-            heading_style = ParagraphStyle('Heading2', parent=styles['Heading2'], textColor=colors.da            content.append(Paragraph(row['Headings'], heading_style))
+            heading_style = ParagraphStyle('Heading2', parent=styles['Heading2'], textColor=colors.darkgreen)
+            content.append(Paragraph(row['Headings'], heading_style))
             content.append(Spacer(1, 10))
             
             # Article Summary
@@ -59,14 +63,16 @@ def generate_full_pdf(df1, df2, df3):
         return content
 
     story = []
-    story.extend(create_catego    story.extend(create_category_content(df2, "SEBI & IRDAI News"))
+    story.extend(create_category_content(df1, "RBI News"))
+    story.extend(create_category_content(df2, "SEBI & IRDAI News"))
     story.extend(create_category_content(df3, "PIB News"))
 
     doc.build(story)
     buffer.seek(0)
     return buffer
-
-def text_to_speech(text, key):
+    
+    
+    def text_to_speech(text, key):
     if key not in st.session_state.audio_data:
         tts = gTTS(text=text, lang='en')
         mp3_fp = BytesIO()
