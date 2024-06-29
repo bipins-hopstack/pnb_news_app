@@ -185,7 +185,7 @@ st.sidebar.markdown('## NEWS - RBI/SEBI/IRDAI/PIB <span style="font-size: medium
 # Radio button to select the news category
 news_category = st.sidebar.radio(
     "Select News Category",
-    ('RBI News', 'SEBI & IRDAI News','PIB News')
+    ('RBI News', 'SEBI & IRDAI News', 'PIB News', 'RBI Notification')
 )
 
 # Options for displaying news
@@ -205,6 +205,12 @@ elif news_category == 'PIB News':
         "Select News Option",
         ('Gist of the News', 'News Headings with Summary', 'News Headings with URLs')
     )
+elif news_category == 'RBI Notification':
+    news_option = st.sidebar.radio(
+        "Select News Option",
+        ('Gist of the News', 'News Headings with Summary', 'News Headings with URLs')
+    st.dataframe(df4)
+    
 
 # Display selected news based on category and option
 
@@ -256,9 +262,7 @@ elif news_category == 'PIB News':
         st.header("News Headings with URLs")
         display_dataframe(df3)
 
-elif news_category == 'RBI Notification':
-     st.dataframe(df4)
-    
+
     
 
 
