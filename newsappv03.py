@@ -193,17 +193,17 @@ news_option = None
 if news_category == 'RBI News':
     news_option = st.sidebar.radio(
         "Select News Option",
-        ('Gist of the News', 'News Headings with Summary', 'News Heading with URLs')
+        ('Gist of the News', 'News Headings with Summary')
     )
 elif news_category == 'SEBI & IRDAI News':
     news_option = st.sidebar.radio(
         "Select News Option",
-        ('Gist of the News', 'News Headings with Summary', 'News Headings with URLs')
+        ('Gist of the News', 'News Headings with Summary')
     )
 elif news_category == 'PIB News':
     news_option = st.sidebar.radio(
         "Select News Option",
-        ('Gist of the News', 'News Headings with Summary', 'News Headings with URLs')
+        ('Gist of the News', 'News Headings with Summary')
     )
 elif news_category == 'RBI Notification':
     display_dataframe(df4)
@@ -257,9 +257,9 @@ elif news_category == 'PIB News':
             text_to_speech(summary, f"pib_{i}")
             st.write(summary)
             st.markdown("---")
-    elif news_option == 'News Headings with URLs':
-        st.header("News Headings with URLs")
-        display_dataframe(df3)
+   # elif news_option == 'News Headings with URLs':
+   #     st.header("News Headings with URLs")
+   #     display_dataframe(df3)
 
 
     
