@@ -256,6 +256,12 @@ elif news_category == 'PIB News':
         st.header("News Headings with URLs")
         display_dataframe(df3)
 
+elif news_category == 'RBI Notification':
+     st.dataframe(df4)
+    
+    
+
+
 # Add this to your Streamlit app's sidebar
 if st.sidebar.button('Download Full Report'):
     pdf = generate_full_pdf(df1, df2, df3)
