@@ -77,11 +77,12 @@ def add_logo(logo_path, width, height):
     logo = Image.open(logo_path)
     modified_logo = logo.resize((width, height))
     return modified_logo
-
-def display_dataframe(df):
-    for i, row in df.iterrows():
+    
+# AIwithSS commenting out the function as Links included in summary
+#def display_dataframe(df):
+    #for i, row in df.iterrows():
         #st.markdown(f"•  **{row['Headings']}**")
-        st.markdown(f"[Click Here to access News URL]({row['Link']})")
+        #st.markdown(f"[Click Here to access News URL]({row['Link']})")
 
 def generate_full_pdf(df1, df2, df3):
     buffer = io.BytesIO()
@@ -212,6 +213,7 @@ elif news_category == 'RBI Notification':
     
 
 # Display selected news based on category and option
+# AIwithSS - modified loop to diplay link under Summaries
 
 if news_category == 'RBI News':
     if news_option == 'Gist of the News':
@@ -220,15 +222,15 @@ if news_category == 'RBI News':
         st.write(rbi_gist)
     elif news_option == 'News Headings with Summary':
         st.header("News Headings with Summary")
-        for i, (heading, summary) in enumerate(zip(df1['Headings'], df1['Summary'])):
+        for i, (heading, summary, link) in enumerate(zip(df1['Headings'], df1['Summary'],df1['Link'])):
             st.markdown(f"•  **{heading}**")
-            display_dataframe(df1)
             text_to_speech(summary, f"rbi_{i}")
             st.write(summary)
+            st.markdown(f"[Click Here to access News URL]({link})")
             st.markdown("---")
-    elif news_option == 'News Heading with URLs':
-        st.header("News Heading with URLs")
-        display_dataframe(df1)
+    #elif news_option == 'News Heading with URLs':
+        #st.header("News Heading with URLs")
+        #display_dataframe(df1)
         
 elif news_category == 'SEBI & IRDAI News':
     if news_option == 'Gist of the News':
@@ -237,15 +239,15 @@ elif news_category == 'SEBI & IRDAI News':
         st.write(sebi_gist)
     elif news_option == 'News Headings with Summary':
         st.header("News Headings with Summary")
-        for i, (heading, summary) in enumerate(zip(df2['Headings'], df2['Summary'])):
+        for i, (heading, summary,link) in enumerate(zip(df2['Headings'], df2['Summary'],df2['Link'])):
             st.markdown(f"•  **{heading}**")
-            display_dataframe(df2)
             text_to_speech(summary, f"sebi_{i}")
             st.write(summary)
+            st.markdown(f"[Click Here to access News URL]({link})")
             st.markdown("---")
-    elif news_option == 'News Headings with URLs':
-        st.header("News Headings with URLs")
-        display_dataframe(df2)
+    #elif news_option == 'News Headings with URLs':
+        #st.header("News Headings with URLs")
+        #display_dataframe(df2)
         
 elif news_category == 'PIB News':
     if news_option == 'Gist of the News':
@@ -254,11 +256,11 @@ elif news_category == 'PIB News':
         st.write(pib_gist)
     elif news_option == 'News Headings with Summary':
         st.header("News Headings with Summary")
-        for i, (heading, summary) in enumerate(zip(df3['Headings'], df3['Summary'])):
+        for i, (heading, summary,link) in enumerate(zip(df3['Headings'], df3['Summary'],df3['Link'])):
             st.markdown(f"•  **{heading}**")
-            display_dataframe(df3)
             text_to_speech(summary, f"pib_{i}")
             st.write(summary)
+            st.markdown(f"[Click Here to access News URL]({link})")
             st.markdown("---")
    # elif news_option == 'News Headings with URLs':
    #     st.header("News Headings with URLs")
