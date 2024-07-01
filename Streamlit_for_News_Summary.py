@@ -24,11 +24,12 @@ def add_logo(logo_path, width, height):
     modified_logo = logo.resize((width, height))
     return modified_logo
 # In[49]:
+# AIwithSS Commenting out Function as seperate radio button not required for Links
 # Function to display dataframe with text wrap and hyperlinks
-def display_dataframe(df):
-    for i, row in df.iterrows():
-        st.markdown(f"•  {row['Headings']}")
-        st.markdown(f"[Click Here to access News URL]({row['Link']})")
+#def display_dataframe(df):
+    #for i, row in df.iterrows():
+        #st.markdown(f"•  {row['Headings']}")
+        #st.markdown(f"[Click Here to access News URL]({row['Link']})")
 # In[50]:
 # Streamlit UI
 st.title("News Dashboard")
@@ -41,35 +42,38 @@ news_category = st.sidebar.radio(
     ('RBI News', 'SEBI & IRDAI News','PIB News')
 )
 # Options for displaying news
+# AIwithSS - removing news Headings with URLs radio button
 news_option = None
 if news_category == 'RBI News':
     news_option = st.sidebar.radio(
         "Select News Option",
-        ('Gist of the News', 'News Headings with Summary', 'News Heading with URLs')
+        ('Gist of the News', 'News Headings with Summary')
     )
 elif news_category == 'SEBI & IRDAI News':
     news_option = st.sidebar.radio(
         "Select News Option",
-        ('Gist of the News', 'News Headings with Summary', 'News Headings with URLs')
+        ('Gist of the News', 'News Headings with Summary')
     )
 elif news_category == 'PIB News':
     news_option = st.sidebar.radio(
         "Select News Option",
-        ('Gist of the News', 'News Headings with Summary', 'News Headings with URLs')
+        ('Gist of the News', 'News Headings with Summary')
     )
 # Display selected news based on category and option
+#Aiwith SS - Added links to summary
 if news_category == 'RBI News':
     if news_option == 'Gist of the News':
         st.header("Gist of the News")
         st.write(rbi_gist)
     elif news_option == 'News Headings with Summary':
         st.header("News Headings with Summary")
-        for heading,summary in zip(df1['Headings'],df1['Summary']):
+        for heading,summary,link in zip(df1['Headings'],df1['Summary'],df1['Link']):
             st.markdown(f"•  {heading}")                       
             st.write(summary)
-    elif news_option == 'News Heading with URLs':
-        st.header("News Heading with URLs")
-        display_dataframe(df1)
+            st.markdown(f"[Click Here to access News URL]({link})")
+    #elif news_option == 'News Heading with URLs':
+        #st.header("News Heading with URLs")
+        #display_dataframe(df1)
 
 elif news_category == 'SEBI & IRDAI News':
     if news_option == 'Gist of the News':
@@ -77,12 +81,13 @@ elif news_category == 'SEBI & IRDAI News':
         st.write(sebi_gist)
     elif news_option == 'News Headings with Summary':
         st.header("News Headings with Summary")
-        for heading,summary in zip(df2['Headings'],df2['Summary']):
+        for heading,summary,link in zip(df2['Headings'],df2['Summary'],df2['Link']):
             st.markdown(f"•  {heading}")
             st.write(summary)
-    elif news_option == 'News Headings with URLs':
-        st.header("News Headings with URLs")
-        display_dataframe(df2)
+            st.markdown(f"[Click Here to access News URL]({link})")
+    #elif news_option == 'News Headings with URLs':
+        #st.header("News Headings with URLs")
+        #display_dataframe(df2)
 
 elif news_category == 'PIB News':
     if news_option == 'Gist of the News':
@@ -90,11 +95,12 @@ elif news_category == 'PIB News':
         st.write(pib_gist)
     elif news_option == 'News Headings with Summary':
         st.header("News Headings with Summary")
-        for heading,summary in zip(df3['Headings'],df3['Summary']):
+        for heading,summary,link in zip(df3['Headings'],df3['Summary'],df3['Link']):
             st.markdown(f"•  {heading}")
             st.write(summary)
-    elif news_option == 'News Headings with URLs':
-        st.header("News Headings with URLs")
-        display_dataframe(df3)
+            st.markdown(f"[Click Here to access News URL]({link})")
+    #elif news_option == 'News Headings with URLs':
+        #st.header("News Headings with URLs")
+        #display_dataframe(df3)
 # In[ ]:
 # In[ ]:
