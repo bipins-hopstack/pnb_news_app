@@ -243,8 +243,9 @@ elif news_category == 'SEBI & IRDAI News':
             st.markdown(f"•  **{heading}**")
             text_to_speech(summary, f"sebi_{i}")
             st.write(summary)
-            st.markdown(f"[Click Here to access News URL]({link})")
             st.markdown("---")
+        st.markdown(f"[Click Here to access News URL]({link})")
+        
     #elif news_option == 'News Headings with URLs':
         #st.header("News Headings with URLs")
         #display_dataframe(df2)
