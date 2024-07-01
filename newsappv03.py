@@ -79,10 +79,11 @@ def add_logo(logo_path, width, height):
     return modified_logo
     
 # AIwithSS commenting out the function as Links included in summary
-#def display_dataframe(df):
-    #for i, row in df.iterrows():
-        #st.markdown(f"•  **{row['Headings']}**")
-        #st.markdown(f"[Click Here to access News URL]({row['Link']})")
+
+def display_dataframe(df):
+    for i, row in df.iterrows():
+        st.markdown(f"•  **{row['Headings']}**")
+        st.markdown(f"[Click Here to access News URL]({row['Link']})")
 
 def generate_full_pdf(df1, df2, df3):
     buffer = io.BytesIO()
@@ -243,8 +244,9 @@ elif news_category == 'SEBI & IRDAI News':
             st.markdown(f"•  **{heading}**")
             text_to_speech(summary, f"sebi_{i}")
             st.write(summary)
+            st.markdown(f"[Click Here to access News URL]({link})")
             st.markdown("---")
-        st.markdown(f"[Click Here to access News URL]({link})")
+      
         
     #elif news_option == 'News Headings with URLs':
         #st.header("News Headings with URLs")
