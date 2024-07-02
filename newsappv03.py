@@ -182,7 +182,7 @@ st.title("News Dashboard")
 
 # Sidebar with collapsible section for RBI News
 st.sidebar.image(add_logo(logo_path="PNBLogo.png", width=175, height=85), use_column_width=True)
-st.sidebar.markdown('## NEWS - RBI/SEBI/IRDAI/PIB <span style="font-size: medium">28th June 2024</span>', unsafe_allow_html=True)
+st.sidebar.markdown('## NEWS - RBI/SEBI/IRDAI/PIB <span style="font-size: medium">01st July 2024</span>', unsafe_allow_html=True)
 
 # Radio button to select the news category
 news_category = st.sidebar.radio(
