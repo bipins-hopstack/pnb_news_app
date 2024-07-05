@@ -182,12 +182,12 @@ st.title("News Dashboard")
 
 # Sidebar with collapsible section for RBI News
 st.sidebar.image(add_logo(logo_path="PNBLogo.png", width=175, height=85), use_column_width=True)
-st.sidebar.markdown('## NEWS - RBI/SEBI/IRDAI/PIB <span style="font-size: medium">04 July 2024</span>', unsafe_allow_html=True)
+st.sidebar.markdown('## NEWS - RBI/PIB <span style="font-size: medium">04 July 2024</span>', unsafe_allow_html=True)
 
 # Radio button to select the news category
 news_category = st.sidebar.radio(
     "Select News Category",
-    ('RBI News', 'SEBI & IRDAI News', 'PIB News', 'RBI Notification')
+    ('RBI News', 'PIB News', 'RBI Notification')
 )
 
 # Options for displaying news
@@ -197,11 +197,11 @@ if news_category == 'RBI News':
         "Select News Option",
         ('Gist of the News', 'News Headings with Summary')
     )
-elif news_category == 'SEBI & IRDAI News':
-    news_option = st.sidebar.radio(
-        "Select News Option",
-        ('Gist of the News', 'News Headings with Summary')
-    )
+#elif news_category == 'SEBI & IRDAI News':
+    #news_option = st.sidebar.radio(
+        #"Select News Option",
+        #('Gist of the News', 'News Headings with Summary')
+    #)
 elif news_category == 'PIB News':
     news_option = st.sidebar.radio(
         "Select News Option",
@@ -233,19 +233,19 @@ if news_category == 'RBI News':
         #st.header("News Heading with URLs")
         #display_dataframe(df1)
         
-elif news_category == 'SEBI & IRDAI News':
-    if news_option == 'Gist of the News':
-        st.header("Gist of the News")
-        text_to_speech(sebi_gist, "sebi_gist")
-        st.write(sebi_gist)
-    elif news_option == 'News Headings with Summary':
-        st.header("News Headings with Summary")
-        for i, (heading, summary,link) in enumerate(zip(df2['Headings'], df2['Summary'],df2['Link'])):
-            st.markdown(f"•  **{heading}**")
-            text_to_speech(summary, f"sebi_{i}")
-            st.write(summary)
-            st.markdown(f"[Click Here to access News URL]({link})")
-            st.markdown("---")
+#elif news_category == 'SEBI & IRDAI News':
+    #if news_option == 'Gist of the News':
+        #st.header("Gist of the News")
+        #text_to_speech(sebi_gist, "sebi_gist")
+        #st.write(sebi_gist)
+    #elif news_option == 'News Headings with Summary':
+        #st.header("News Headings with Summary")
+        #for i, (heading, summary,link) in enumerate(zip(df2['Headings'], df2['Summary'],df2['Link'])):
+            #st.markdown(f"•  **{heading}**")
+            #text_to_speech(summary, f"sebi_{i}")
+            #st.write(summary)
+            #st.markdown(f"[Click Here to access News URL]({link})")
+            #st.markdown("---")
       
         
     #elif news_option == 'News Headings with URLs':
