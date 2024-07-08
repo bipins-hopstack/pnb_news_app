@@ -62,11 +62,15 @@ url1 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI.csv?raw=tr
 url2 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA_21JUN.csv?raw=true"
 url3 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/PIB.csv?raw=true"
 url4 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_NOTIFICATION.csv?raw=true"
+url5 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/USA.csv?raw=true"
+url6 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/Japan.csv?raw=true"
 
 df1 = read_github_csv(url1)
 df2 = read_github_csv(url2)
 df3 = read_github_csv(url3)
 df4 = read_github_csv(url4)
+df5 = read_github_csv(url5)
+df6 = read_github_csv(url6)
 
 rbi_gist = df1.iloc[0]['Gist']
 sebi_gist = df2.iloc[0]['Gist']
@@ -187,7 +191,7 @@ st.sidebar.markdown('## NEWS - RBI/PIB <span style="font-size: medium">05 July 2
 # Radio button to select the news category
 news_category = st.sidebar.radio(
     "Select News Category",
-    ('RBI News', 'PIB News', 'RBI Notification')
+    ('RBI News', 'PIB News', 'RBI Notification','Federal Central Bank','Bank of Japan')
 )
 
 # Options for displaying news
@@ -209,7 +213,10 @@ elif news_category == 'PIB News':
     )
 elif news_category == 'RBI Notification':
     display_dataframe(df4)
-        
+elif news_category == 'Federal Central Bank':
+    display_dataframe(df5)
+elif news_category == 'Bank of Japan':
+    display_dataframe(df6)
     
     
 
