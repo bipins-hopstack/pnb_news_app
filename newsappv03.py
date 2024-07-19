@@ -109,7 +109,7 @@ def generate_full_pdf(df1, df2, df3):
         for _, row in df.iterrows():
             try:
                 # Article Heading
-                heading_style = ParagraphStyle('Heading2', parent=styles['Heading2'], textColor=colors.darkgreen)
+                heading_style = ParagraphStyle('Heading2', parent=styles['Heading2'], textColor=colors.brown)
                 content.append(Paragraph(clean_text(row['Headings']), heading_style))
                 content.append(Spacer(1, 10))
                 
