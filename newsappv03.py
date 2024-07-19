@@ -11,10 +11,6 @@ import unicodedata
 import requests
 from io import StringIO
 
-def clean_text(text):
-    # Remove any non-printable characters
-    return ''.join(ch for ch in text if unicodedata.category(ch)[0] != 'C')
-
 def read_github_csv(url):
     # List of encodings to try
     encodings = ['utf-8', 'ISO-8859-1', 'latin1', 'cp1252']
