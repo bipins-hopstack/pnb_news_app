@@ -7,7 +7,7 @@ import base64
 from io import BytesIO
 import io
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4
+from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
@@ -67,9 +67,13 @@ def display_dataframe(df):
         st.markdown(f"[Click Here to access News URL]({row['Link']})")
 
 
-def clean_text(text):
-    # Remove any non-printable characters
-    return ''.join(ch for ch in text if unicodedata.category(ch)[0] != 'C')
+def add_page_border(canvas, doc):
+    canvas.saveState()
+    canvas.setStrokeColor(colors.HexColor("#A20E37"))
+    canvas.setLineWidth(2)
+    canvas.rect(doc.leftMargin, doc.bottomMargin,
+                doc.width, doc.height, stroke=1, fill=0)
+    canvas.restoreState()
 
 def create_category_content(df, category_name):
     content = []
@@ -87,33 +91,20 @@ def create_category_content(df, category_name):
     content.append(Paragraph(clean_text(category_name), title_style))
     content.append(Spacer(1, 20))
     
-    # Content with border
-    data = []
+    # Content
     for _, row in df.iterrows():
         try:
             # Article Heading
             heading_style = ParagraphStyle('Heading2', parent=styles['Heading2'], textColor=border_color)
-            data.append([Paragraph(clean_text(row['Headings']), heading_style)])
-            data.append([Spacer(1, 10)])
+            content.append(Paragraph(clean_text(row['Headings']), heading_style))
+            content.append(Spacer(1, 10))
             
             # Article Summary
-            data.append([Paragraph(clean_text(row['Summary']), styles['Normal'])])
-            data.append([Spacer(1, 20)])
+            content.append(Paragraph(clean_text(row['Summary']), styles['Normal']))
+            content.append(Spacer(1, 20))
         except Exception as e:
             st.error(f"Error processing row: {e}")
             continue  # Skip this row and continue with the next
-    
-    # Create a table with a border
-    table = Table(data, colWidths=[7*inch])  # Adjust the width as needed
-    table.setStyle(TableStyle([
-        ('BOX', (0,0), (-1,-1), 1, border_color),
-        ('VALIGN', (0,0), (-1,-1), 'TOP'),
-        ('TOPPADDING', (0,0), (-1,-1), 10),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 10),
-        ('LEFTPADDING', (0,0), (-1,-1), 10),
-        ('RIGHTPADDING', (0,0), (-1,-1), 10),
-    ]))
-    content.append(table)
     
     # Footer
     content.append(Spacer(1, 20))
@@ -126,13 +117,15 @@ def create_category_content(df, category_name):
 
 def generate_full_pdf(df1, df2, df3):
     buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=A4)
+    doc = SimpleDocTemplate(buffer, pagesize=letter, 
+                            leftMargin=0.5*inch, rightMargin=0.5*inch,
+                            topMargin=0.5*inch, bottomMargin=0.5*inch)
     story = []
     try:
         story.extend(create_category_content(df1, "RBI News"))
         story.extend(create_category_content(df2, "SEBI & IRDAI News"))
         story.extend(create_category_content(df3, "PIB News"))
-        doc.build(story)
+        doc.build(story, onFirstPage=add_page_border, onLaterPages=add_page_border)
         buffer.seek(0)
         return buffer
     except Exception as e:
