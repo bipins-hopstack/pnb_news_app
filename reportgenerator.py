@@ -1,0 +1,89 @@
+#Report lab
+import streamlit as st
+from io import BytesIO
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, KeepTogether
+from reportlab.lib.enums import TA_CENTER, TA_LEFT
+import unicodedata
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+
+def clean_text(text):
+    # Remove any non-printable characters
+    return ''.join(ch for ch in text if unicodedata.category(ch)[0] != 'C')
+
+def add_page_number(canvas, doc):
+    page_num = canvas.getPageNumber()
+    text = f"Page {page_num}"
+    canvas.setFont("Helvetica", 9)
+    canvas.drawRightString(7.5*inch, 0.5*inch, text)
+
+def add_page_border_and_header_footer(canvas, doc):
+    canvas.saveState()
+    
+    # Draw border
+    canvas.setStrokeColor(colors.HexColor("#A20E37"))
+    canvas.setLineWidth(2)
+    canvas.rect(doc.leftMargin, doc.bottomMargin,
+                doc.width, doc.height, stroke=1, fill=0)
+    
+    # Add header
+    canvas.setFont("Helvetica-Bold", 12)
+    canvas.drawString(doc.leftMargin + 0.25*inch, doc.height + doc.topMargin - 0.25*inch, "Document Header")
+    
+    # Add footer
+    canvas.setFont("Helvetica", 10)
+    canvas.drawString(doc.leftMargin + 0.25*inch, doc.bottomMargin + 0.25*inch, "Page Footer")
+    
+    # Add page number
+    add_page_number(canvas, doc)
+    
+    canvas.restoreState()
+
+def create_category_content(df, category_name):
+    content = []
+    styles = getSampleStyleSheet()
+    
+    # Category Title
+    title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment=TA_CENTER, textColor=colors.HexColor("#A20E37"))
+    content.append(Paragraph(clean_text(category_name), title_style))
+    content.append(Spacer(1, 10))
+    
+    # Content
+    for _, row in df.iterrows():
+        try:
+            # Article Heading
+            heading_style = ParagraphStyle('Heading2', parent=styles['Heading2'], textColor=colors.HexColor("#A20E37"))
+            content.append(Paragraph(clean_text(row['Headings']), heading_style))
+            
+            # Article Summary
+            summary_style = ParagraphStyle('Normal', parent=styles['Normal'], fontSize=8, leading=10)
+            content.append(Paragraph(clean_text(row['Summary']), summary_style))
+            content.append(Spacer(1, 5))
+        except Exception as e:
+            st.error(f"Error processing row: {e}")
+            continue  # Skip this row and continue with the next
+    
+    return KeepTogether(content)
+
+def generate_full_pdf(df1, df2, df3):
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter, 
+                            leftMargin=0.5*inch, rightMargin=0.5*inch,
+                            topMargin=0.75*inch, bottomMargin=0.75*inch)
+    story = []
+    try:
+        story.append(create_category_content(df1, "RBI News"))
+        story.append(PageBreak())
+        story.append(create_category_content(df2, "SEBI & IRDAI News"))
+        story.append(PageBreak())
+        story.append(create_category_content(df3, "PIB News"))
+        doc.build(story, onFirstPage=add_page_border_and_header_footer, onLaterPages=add_page_border_and_header_footer)
+        buffer.seek(0)
+        return buffer
+    except Exception as e:
+        st.error(f"Error generating PDF: {e}")
+        return None  # Return None if PDF generation fails
