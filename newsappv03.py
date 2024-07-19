@@ -125,7 +125,7 @@ def create_category_content(df, category_name):
 
 def generate_full_pdf(df1, df2, df3):
     buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    doc = SimpleDocTemplate(buffer, pagesize=A4)
     story = []
     try:
         story.extend(create_category_content(df1, "RBI News"))
