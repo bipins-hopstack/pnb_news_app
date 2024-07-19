@@ -47,9 +47,28 @@ def create_category_content(df, category_name):
     content = []
     styles = getSampleStyleSheet()
     
-    # Category Title
-    title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment=TA_CENTER, textColor=colors.HexColor("#A20E37"))
-    content.append(Paragraph(clean_text(category_name), title_style))
+    # Category Title with background color
+    title_style = ParagraphStyle(
+        'Title',
+        parent=styles['Heading1'],
+        alignment=TA_CENTER,
+        textColor=colors.white,  # White text for better contrast
+        fontSize=16,
+        leading=20
+    )
+    title_para = Paragraph(clean_text(category_name), title_style)
+    
+    # Create a table for the title with background color
+    title_table = Table([[title_para]], colWidths=[7*inch])
+    title_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, -1), HexColor("#FBBC09")),
+        ('TEXTCOLOR', (0, 0), (-1, -1), colors.white),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('TOPPADDING', (0, 0), (-1, -1), 6),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
+    ]))
+    content.append(title_table)
     content.append(Spacer(1, 10))
     
     # Content
@@ -64,7 +83,7 @@ def create_category_content(df, category_name):
             content.append(Paragraph(clean_text(row['Summary']), summary_style))
             content.append(Spacer(1, 5))
         except Exception as e:
-            st.error(f"Error processing row: {e}")
+            print(f"Error processing row: {e}")
             continue  # Skip this row and continue with the next
     
     return KeepTogether(content)
