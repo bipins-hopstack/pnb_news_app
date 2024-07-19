@@ -15,31 +15,6 @@ import unicodedata
 import requests
 from io import StringIO
 
-# Import existing dataframes
-url1 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI.csv?raw=true"
-url2 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA_21JUN.csv?raw=true"
-url3 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/PIB.csv?raw=true"
-url4 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_NOTIFICATION.csv?raw=true"
-url5 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/USA.csv?raw=true"
-url6 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/Japan.csv?raw=true"
-
-df1 = read_github_csv(url1)
-df2 = read_github_csv(url2)
-df3 = read_github_csv(url3)
-df4 = read_github_csv(url4)
-df5 = read_github_csv(url5)
-df6 = read_github_csv(url6)
-
-rbi_gist = df1.iloc[0]['Gist']
-sebi_gist = df2.iloc[0]['Gist']
-pib_gist = df3.iloc[0]['Gist']
-
-
-
-# Initialize session state
-if 'audio_data' not in st.session_state:
-    st.session_state.audio_data = {}
-
 
 def read_github_csv(url):
     # List of encodings to try
@@ -206,6 +181,29 @@ def text_to_speech(text, key):
             </script>
         """
         st.components.v1.html(html_string, height=50)
+
+# Initialize session state
+if 'audio_data' not in st.session_state:
+    st.session_state.audio_data = {}
+# Import existing dataframes
+url1 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI.csv?raw=true"
+url2 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA_21JUN.csv?raw=true"
+url3 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/PIB.csv?raw=true"
+url4 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_NOTIFICATION.csv?raw=true"
+url5 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/USA.csv?raw=true"
+url6 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/Japan.csv?raw=true"
+
+df1 = read_github_csv(url1)
+df2 = read_github_csv(url2)
+df3 = read_github_csv(url3)
+df4 = read_github_csv(url4)
+df5 = read_github_csv(url5)
+df6 = read_github_csv(url6)
+
+rbi_gist = df1.iloc[0]['Gist']
+sebi_gist = df2.iloc[0]['Gist']
+pib_gist = df3.iloc[0]['Gist']
+
 
 # Streamlit UI
 st.title("News Dashboard")
