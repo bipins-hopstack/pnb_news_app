@@ -32,8 +32,8 @@ def add_page_border_and_header_footer(canvas, doc):
                 doc.width, doc.height, stroke=1, fill=0)
     
     # Add header
-    canvas.setFont("Helvetica-Bold", 12)
-    canvas.drawString(doc.leftMargin + 0.25*inch, doc.height + doc.topMargin - 0.25*inch, "Document Header")
+    #canvas.setFont("Helvetica-Bold", 12)
+    #canvas.drawString(doc.leftMargin + 0.25*inch, doc.height + doc.topMargin - 0.25*inch, "Document Header")
     
     # Add page number
     page_num = canvas.getPageNumber()
