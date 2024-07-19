@@ -147,7 +147,7 @@ def create_category_content(df, category_name):
     content.append(PageBreak())
     return content
 
-def generate_pdf(buffer, df1, df2, df3):
+def generate_full_pdf(buffer, df1, df2, df3):
     doc = SimpleDocTemplate(buffer)
     story = []
     try:
