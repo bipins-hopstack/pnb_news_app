@@ -89,19 +89,15 @@ def display_dataframe(df):
         st.markdown(f"•  **{row['Headings']}**")
         st.markdown(f"[Click Here to access News URL]({row['Link']})")
 
-def generate_full_pdf(df1, df2, df3):
-    buffer = io.BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=A4)
-    styles = getSampleStyleSheet()
-    styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
 
-    def clean_text(text):
+def clean_text(text):
         # Remove any non-printable characters
-        return ''.join(ch for ch in text if unicodedata.category(ch)[0] != 'C')
+    return ''.join(ch for ch in text if unicodedata.category(ch)[0] != 'C')
 
 def create_category_content(df, category_name):
     content = []
     border_color = colors.HexColor("#A20E37")
+    styles = getSampleStyleSheet()
     
     # Header
     header_style = ParagraphStyle('Header', alignment=TA_CENTER, textColor=border_color)
@@ -124,7 +120,7 @@ def create_category_content(df, category_name):
             data.append([Spacer(1, 10)])
             
             # Article Summary
-            data.append([Paragraph(clean_text(row['Summary']), styles['Justify'])])
+            data.append([Paragraph(clean_text(row['Summary']), styles['Normal'])])
             data.append([Spacer(1, 20)])
         except Exception as e:
             print(f"Error processing row: {e}")
@@ -151,6 +147,11 @@ def create_category_content(df, category_name):
     content.append(PageBreak())
     return content
 
+def generate_full_pdf(df1, df2, df3):
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4)
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
     story = []
     try:
         story.extend(create_category_content(df1, "RBI News"))
