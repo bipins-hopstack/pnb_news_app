@@ -102,14 +102,14 @@ def generate_full_pdf(df1, df2, df3):
     def create_category_content(df, category_name):
         content = []
         # Category Title
-        title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment=TA_CENTER, textColor=colors.darkblue)
+        title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment=TA_CENTER, textColor=colors.HexColor("#A20E37"))
         content.append(Paragraph(clean_text(category_name), title_style))
         content.append(Spacer(1, 20))
 
         for _, row in df.iterrows():
             try:
                 # Article Heading
-                heading_style = ParagraphStyle('Heading2', parent=styles['Heading2'], textColor=colors.brown)
+                heading_style = ParagraphStyle('Heading2', parent=styles['Heading2'], textColor=colors.HexColor("#A20E37"))
                 content.append(Paragraph(clean_text(row['Headings']), heading_style))
                 content.append(Spacer(1, 10))
                 
