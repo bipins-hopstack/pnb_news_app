@@ -95,11 +95,11 @@ def generate_full_pdf(df1, df2, df3):
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
 
-    def clean_text(text):
+def clean_text(text):
         # Remove any non-printable characters
-        return ''.join(ch for ch in text if unicodedata.category(ch)[0] != 'C')
+    return ''.join(ch for ch in text if unicodedata.category(ch)[0] != 'C')
 
-    def create_category_content(df, category_name):
+def create_category_content(df, category_name):
     content = []
     border_color = colors.HexColor("#A20E37")
     
