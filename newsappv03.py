@@ -100,28 +100,56 @@ def generate_full_pdf(df1, df2, df3):
         return ''.join(ch for ch in text if unicodedata.category(ch)[0] != 'C')
 
     def create_category_content(df, category_name):
-        content = []
-        # Category Title
-        title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment=TA_CENTER, textColor=colors.HexColor("#A20E37"))
-        content.append(Paragraph(clean_text(category_name), title_style))
-        content.append(Spacer(1, 20))
-
-        for _, row in df.iterrows():
-            try:
-                # Article Heading
-                heading_style = ParagraphStyle('Heading2', parent=styles['Heading2'], textColor=colors.HexColor("#A20E37"))
-                content.append(Paragraph(clean_text(row['Headings']), heading_style))
-                content.append(Spacer(1, 10))
-                
-                # Article Summary
-                content.append(Paragraph(clean_text(row['Summary']), styles['Justify']))
-                content.append(Spacer(1, 20))
-            except Exception as e:
-                print(f"Error processing row: {e}")
-                continue  # Skip this row and continue with the next
-
-        content.append(PageBreak())
-        return content
+    content = []
+    border_color = colors.HexColor("#A20E37")
+    
+    # Header
+    header_style = ParagraphStyle('Header', alignment=TA_CENTER, textColor=border_color)
+    header = Paragraph("Document Header", header_style)
+    content.append(header)
+    content.append(Spacer(1, 20))
+    
+    # Category Title
+    title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment=TA_CENTER, textColor=border_color)
+    content.append(Paragraph(clean_text(category_name), title_style))
+    content.append(Spacer(1, 20))
+    
+    # Content with border
+    data = []
+    for _, row in df.iterrows():
+        try:
+            # Article Heading
+            heading_style = ParagraphStyle('Heading2', parent=styles['Heading2'], textColor=border_color)
+            data.append([Paragraph(clean_text(row['Headings']), heading_style)])
+            data.append([Spacer(1, 10)])
+            
+            # Article Summary
+            data.append([Paragraph(clean_text(row['Summary']), styles['Justify'])])
+            data.append([Spacer(1, 20)])
+        except Exception as e:
+            print(f"Error processing row: {e}")
+            continue  # Skip this row and continue with the next
+    
+    # Create a table with a border
+    table = Table(data, colWidths=[7*inch])  # Adjust the width as needed
+    table.setStyle(TableStyle([
+        ('BOX', (0,0), (-1,-1), 1, border_color),
+        ('VALIGN', (0,0), (-1,-1), 'TOP'),
+        ('TOPPADDING', (0,0), (-1,-1), 10),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 10),
+        ('LEFTPADDING', (0,0), (-1,-1), 10),
+        ('RIGHTPADDING', (0,0), (-1,-1), 10),
+    ]))
+    content.append(table)
+    
+    # Footer
+    content.append(Spacer(1, 20))
+    footer_style = ParagraphStyle('Footer', alignment=TA_CENTER, textColor=border_color)
+    footer = Paragraph("Page Footer", footer_style)
+    content.append(footer)
+    
+    content.append(PageBreak())
+    return content
 
     story = []
     try:
