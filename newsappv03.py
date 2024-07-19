@@ -6,12 +6,7 @@ from gtts import gTTS
 import base64
 from io import BytesIO
 import io
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units import inch
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
-from reportlab.lib.enums import TA_CENTER
+from reportgenerator import generate_full_pdf
 import unicodedata
 import requests
 from io import StringIO
@@ -68,72 +63,6 @@ def display_dataframe(df):
     for i, row in df.iterrows():
         st.markdown(f"•  **{row['Headings']}**")
         st.markdown(f"[Click Here to access News URL]({row['Link']})")
-
-
-def add_page_border(canvas, doc):
-    canvas.saveState()
-    canvas.setStrokeColor(colors.HexColor("#A20E37"))
-    canvas.setLineWidth(2)
-    canvas.rect(doc.leftMargin, doc.bottomMargin,
-                doc.width, doc.height, stroke=1, fill=0)
-    canvas.restoreState()
-
-def create_category_content(df, category_name):
-    content = []
-    border_color = colors.HexColor("#A20E37")
-    styles = getSampleStyleSheet()
-    
-    # Header
-    header_style = ParagraphStyle('Header', alignment=TA_CENTER, textColor=border_color)
-    header = Paragraph("Document Header", header_style)
-    content.append(header)
-    content.append(Spacer(1, 20))
-    
-    # Category Title
-    title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment=TA_CENTER, textColor=border_color)
-    content.append(Paragraph(clean_text(category_name), title_style))
-    content.append(Spacer(1, 20))
-    
-    # Content
-    for _, row in df.iterrows():
-        try:
-            # Article Heading
-            heading_style = ParagraphStyle('Heading2', parent=styles['Heading2'], textColor=border_color)
-            content.append(Paragraph(clean_text(row['Headings']), heading_style))
-            content.append(Spacer(1, 10))
-            
-            # Article Summary
-            content.append(Paragraph(clean_text(row['Summary']), styles['Normal']))
-            content.append(Spacer(1, 20))
-        except Exception as e:
-            st.error(f"Error processing row: {e}")
-            continue  # Skip this row and continue with the next
-    
-    # Footer
-    content.append(Spacer(1, 20))
-    footer_style = ParagraphStyle('Footer', alignment=TA_CENTER, textColor=border_color)
-    footer = Paragraph("Page Footer", footer_style)
-    content.append(footer)
-    
-    content.append(PageBreak())
-    return content
-
-def generate_full_pdf(df1, df2, df3):
-    buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter, 
-                            leftMargin=0.5*inch, rightMargin=0.5*inch,
-                            topMargin=0.5*inch, bottomMargin=0.5*inch)
-    story = []
-    try:
-        story.extend(create_category_content(df1, "RBI News"))
-        story.extend(create_category_content(df2, "SEBI & IRDAI News"))
-        story.extend(create_category_content(df3, "PIB News"))
-        doc.build(story, onFirstPage=add_page_border, onLaterPages=add_page_border)
-        buffer.seek(0)
-        return buffer
-    except Exception as e:
-        st.error(f"Error generating PDF: {e}")
-        return None  # Return None if PDF generation fails
     
 def text_to_speech(text, key):
     if key not in st.session_state.audio_data:
