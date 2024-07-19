@@ -317,5 +317,5 @@ if st.sidebar.button('Download Full Report'):
                 mime="application/pdf"
             )
     except Exception as e:
-         st.sidebar.error("Failed to generate PDF. Please try again.",e)
+         print(f"Failed to generate PDF. Error : {e}")
     
