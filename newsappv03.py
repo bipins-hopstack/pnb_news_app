@@ -13,12 +13,33 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
 import unicodedata
 import requests
+from io import StringIO
+
+# Import existing dataframes
+url1 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI.csv?raw=true"
+url2 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA_21JUN.csv?raw=true"
+url3 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/PIB.csv?raw=true"
+url4 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_NOTIFICATION.csv?raw=true"
+url5 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/USA.csv?raw=true"
+url6 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/Japan.csv?raw=true"
+
+df1 = read_github_csv(url1)
+df2 = read_github_csv(url2)
+df3 = read_github_csv(url3)
+df4 = read_github_csv(url4)
+df5 = read_github_csv(url5)
+df6 = read_github_csv(url6)
+
+rbi_gist = df1.iloc[0]['Gist']
+sebi_gist = df2.iloc[0]['Gist']
+pib_gist = df3.iloc[0]['Gist']
+
 
 
 # Initialize session state
 if 'audio_data' not in st.session_state:
     st.session_state.audio_data = {}
-from io import StringIO
+
 
 def read_github_csv(url):
     # List of encodings to try
@@ -55,26 +76,6 @@ def read_github_csv(url):
     except Exception as e:
         print(f"All reading attempts failed. Error: {str(e)}")
         return None
-
-
-# Import existing dataframes
-url1 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI.csv?raw=true"
-url2 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/SEBI_PFRDA_21JUN.csv?raw=true"
-url3 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/PIB.csv?raw=true"
-url4 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/RBI_NOTIFICATION.csv?raw=true"
-url5 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/USA.csv?raw=true"
-url6 = "https://github.com/bipins-hopstack/pnb_news_app/blob/main/Japan.csv?raw=true"
-
-df1 = read_github_csv(url1)
-df2 = read_github_csv(url2)
-df3 = read_github_csv(url3)
-df4 = read_github_csv(url4)
-df5 = read_github_csv(url5)
-df6 = read_github_csv(url6)
-
-rbi_gist = df1.iloc[0]['Gist']
-sebi_gist = df2.iloc[0]['Gist']
-pib_gist = df3.iloc[0]['Gist']
 
 def add_logo(logo_path, width, height):
     """Read and return a resized logo"""
@@ -147,7 +148,8 @@ def create_category_content(df, category_name):
     content.append(PageBreak())
     return content
 
-def generate_full_pdf(buffer, df1, df2, df3):
+def generate_full_pdf(df1, df2, df3):
+    buffer = BytesIO()
     doc = SimpleDocTemplate(buffer)
     story = []
     try:
