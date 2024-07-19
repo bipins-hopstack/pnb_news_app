@@ -147,24 +147,19 @@ def create_category_content(df, category_name):
     content.append(PageBreak())
     return content
 
-def generate_full_pdf(df1, df2, df3):
-    buffer = io.BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=A4)
-    styles = getSampleStyleSheet()
-    styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
+def generate_pdf(buffer, df1, df2, df3):
+    doc = SimpleDocTemplate(buffer)
     story = []
     try:
         story.extend(create_category_content(df1, "RBI News"))
         story.extend(create_category_content(df2, "SEBI & IRDAI News"))
         story.extend(create_category_content(df3, "PIB News"))
-
         doc.build(story)
         buffer.seek(0)
         return buffer
     except Exception as e:
         print(f"Error generating PDF: {e}")
         return None  # Return None if PDF generation fails
-
 
     
 def text_to_speech(text, key):
