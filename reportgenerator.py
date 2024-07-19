@@ -35,17 +35,25 @@ def add_page_border_and_header_footer(canvas, doc):
     canvas.setFont("Helvetica-Bold", 12)
     canvas.drawString(doc.leftMargin + 0.25*inch, doc.height + doc.topMargin - 0.25*inch, "Document Header")
     
-    # Add footer
-    canvas.setFont("Helvetica", 10)
-    footer='''Disclaimer: This daily bulletin is not a publication of the Bank. The opinion/views expressed in this bulletin is of various independent newspapers/publications and does not reflect that of the Bank's or its 
-    subsidiaries. Bank is not liable in any manner for the facts/ figures represented in the bulletin. Any reliance on such financials by anyone shall be at their own risk/responsibility.'''
-
-    canvas.drawString(doc.leftMargin + 0.25*inch, doc.bottomMargin + 0.25*inch,footer)
-    
     # Add page number
-    add_page_number(canvas, doc)
+    page_num = canvas.getPageNumber()
+    canvas.setFont("Helvetica", 9)
+    canvas.drawRightString(7.5*inch, 0.75*inch, f"Page {page_num}")
+    
+    # Add disclaimer as footer
+    disclaimer_text = "Disclaimer: This daily bulletin is not a publication of the Bank. The opinion/views expressed in this bulletin is of various independent newspapers/publications and does not reflect that of the Bank's or its subsidiaries. Bank is not liable in any manner for the facts/ figures represented in the bulletin. Any reliance on such financials by anyone shall be at their own risk/responsibility."
+    disclaimer_style = ParagraphStyle(
+        'Disclaimer',
+        fontSize=6,
+        leading=8,
+        alignment=TA_LEFT
+    )
+    disclaimer_paragraph = Paragraph(disclaimer_text, disclaimer_style)
+    disclaimer_paragraph.wrapOn(canvas, doc.width, doc.bottomMargin)
+    disclaimer_paragraph.drawOn(canvas, doc.leftMargin, 0.25*inch)
     
     canvas.restoreState()
+
 
 def create_category_content(df, category_name):
     content = []
