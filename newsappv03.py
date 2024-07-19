@@ -308,12 +308,14 @@ elif news_category == 'PIB News':
 if st.sidebar.button('Download Full Report'):
     buffer = BytesIO()
     pdf = generate_full_pdf(buffer, df1, df2, df3)
-    if pdf:
-        st.sidebar.download_button(
-            label="Click here to download the PDF",
-            data=pdf,
-            file_name="full_news_report.pdf",
-            mime="application/pdf"
-        )
-    else:
-        st.sidebar.error("Failed to generate PDF. Please try again.")
+    try:
+        if pdf:
+            st.sidebar.download_button(
+                label="Click here to download the PDF",
+                data=pdf,
+                file_name="full_news_report.pdf",
+                mime="application/pdf"
+            )
+    except Exception as e:
+         st.sidebar.error("Failed to generate PDF. Please try again.",e)
+    
