@@ -67,7 +67,7 @@ def display_dataframe(df):
 
 
 def clean_text(text):
-        # Remove any non-printable characters
+    # Remove any non-printable characters
     return ''.join(ch for ch in text if unicodedata.category(ch)[0] != 'C')
 
 def create_category_content(df, category_name):
@@ -99,7 +99,7 @@ def create_category_content(df, category_name):
             data.append([Paragraph(clean_text(row['Summary']), styles['Normal'])])
             data.append([Spacer(1, 20)])
         except Exception as e:
-            print(f"Error processing row: {e}")
+            st.error(f"Error processing row: {e}")
             continue  # Skip this row and continue with the next
     
     # Create a table with a border
@@ -123,9 +123,9 @@ def create_category_content(df, category_name):
     content.append(PageBreak())
     return content
 
-def generate_full_pdf(buffer,df1, df2, df3):
-    
-    doc = SimpleDocTemplate(buffer)
+def generate_full_pdf(df1, df2, df3):
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
     story = []
     try:
         story.extend(create_category_content(df1, "RBI News"))
@@ -135,9 +135,8 @@ def generate_full_pdf(buffer,df1, df2, df3):
         buffer.seek(0)
         return buffer
     except Exception as e:
-        print(f"Error generating PDF: {e}")
+        st.error(f"Error generating PDF: {e}")
         return None  # Return None if PDF generation fails
-
     
 def text_to_speech(text, key):
     if key not in st.session_state.audio_data:
@@ -305,17 +304,15 @@ elif news_category == 'PIB News':
 
 
 # Add this to your Streamlit app's sidebar
-if st.sidebar.button('Download Full Report'):
-    buffer = BytesIO()
-    pdf = generate_full_pdf(buffer, df1, df2, df3)
-    try:
-        if pdf:
-            st.sidebar.download_button(
-                label="Click here to download the PDF",
-                data=pdf,
-                file_name="full_news_report.pdf",
-                mime="application/pdf"
-            )
-    except Exception as e:
-         print(f"Failed to generate PDF. Error : {e}")
+if st.sidebar.button('Generate Full Report'):
+    pdf_buffer = generate_full_pdf(df1, df2, df3)
+    if pdf_buffer:
+        st.sidebar.download_button(
+            label="Download Full Report PDF",
+            data=pdf_buffer,
+            file_name="full_news_report.pdf",
+            mime="application/pdf"
+        )
+    else:
+        st.sidebar.error("Failed to generate PDF. Please try again.")
     
