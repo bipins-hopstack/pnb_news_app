@@ -123,8 +123,8 @@ def create_category_content(df, category_name):
     content.append(PageBreak())
     return content
 
-def generate_full_pdf(df1, df2, df3):
-    buffer = BytesIO()
+def generate_full_pdf(buffer,df1, df2, df3):
+    
     doc = SimpleDocTemplate(buffer)
     story = []
     try:
@@ -306,7 +306,8 @@ elif news_category == 'PIB News':
 
 # Add this to your Streamlit app's sidebar
 if st.sidebar.button('Download Full Report'):
-    pdf = generate_full_pdf(df1, df2, df3)
+    buffer = BytesIO()
+    pdf = generate_full_pdf(buffer, df1, df2, df3)
     if pdf:
         st.sidebar.download_button(
             label="Click here to download the PDF",
