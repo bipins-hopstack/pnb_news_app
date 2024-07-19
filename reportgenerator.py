@@ -37,7 +37,10 @@ def add_page_border_and_header_footer(canvas, doc):
     
     # Add footer
     canvas.setFont("Helvetica", 10)
-    canvas.drawString(doc.leftMargin + 0.25*inch, doc.bottomMargin + 0.25*inch, "Page Footer")
+    footer='''Disclaimer: This daily bulletin is not a publication of the Bank. The opinion/views expressed in this bulletin is of various independent newspapers/publications and does not reflect that of the Bank's or its 
+    subsidiaries. Bank is not liable in any manner for the facts/ figures represented in the bulletin. Any reliance on such financials by anyone shall be at their own risk/responsibility.'''
+
+    canvas.drawString(doc.leftMargin + 0.25*inch, doc.bottomMargin + 0.25*inch,footer)
     
     # Add page number
     add_page_number(canvas, doc)
