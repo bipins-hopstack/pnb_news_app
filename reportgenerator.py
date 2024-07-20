@@ -94,6 +94,11 @@ def create_category_content(df, category_name):
             summary_style = ParagraphStyle('Normal', parent=styles['Normal'], fontSize=8, leading=10)
             content.append(Paragraph(clean_text(row['Summary']), summary_style))
             content.append(Spacer(1, 5))
+
+            # Article Summary
+            link_style = ParagraphStyle('Normal', parent=styles['Normal'], fontSize=5, leading=10)
+            content.append(Paragraph(clean_text(row['Link']), link_style))
+            
         except Exception as e:
             print(f"Error processing row: {e}")
             continue  # Skip this row and continue with the next
