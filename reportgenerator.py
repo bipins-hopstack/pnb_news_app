@@ -111,7 +111,7 @@ def create_category_content(df, category_name):
     
     return KeepTogether(content)
 
-def generate_full_pdf(df1, df2, df3):
+def generate_full_pdf(df1, df2, df3, df4, df5, df6):
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=letter, 
                             leftMargin=0.5*inch, rightMargin=0.5*inch,
@@ -123,6 +123,12 @@ def generate_full_pdf(df1, df2, df3):
         story.append(create_category_content(df2, "SEBI & IRDAI News"))
         story.append(PageBreak())
         story.append(create_category_content(df3, "PIB News"))
+        story.append(PageBreak())
+        story.append(create_category_content(df4, "RBI Notification"))
+        story.append(PageBreak())
+        story.append(create_category_content(df5, "Federal Central Bank"))
+        story.append(PageBreak())
+        story.append(create_category_content(df6, "Bank of Japan"))
         doc.build(story, onFirstPage=add_page_border_and_header_footer, onLaterPages=add_page_border_and_header_footer)
         buffer.seek(0)
         return buffer
