@@ -91,7 +91,7 @@ def create_category_content(df, category_name):
             content.append(Paragraph(clean_text(row['Headings']), heading_style))
             
             # Article Summary
-            summary_style = ParagraphStyle('Normal', parent=styles['Normal'], fontSize=8, leading=10)
+            summary_style = ParagraphStyle('Normal', parent=styles['Normal'], fontSize=9, leading=10)
             content.append(Paragraph(clean_text(row['Summary']), summary_style))
             content.append(Spacer(1, 5))
 
