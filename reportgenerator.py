@@ -107,6 +107,7 @@ def create_category_content(df, category_name):
             
         except Exception as e:
             print(f"Error processing row: {e}")
+            print(row)
             continue  # Skip this row and continue with the next
     
     return KeepTogether(content)
