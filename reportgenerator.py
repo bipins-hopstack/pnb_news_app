@@ -37,11 +37,9 @@ def add_page_border_and_header_footer(canvas, doc):
     if canvas.getPageNumber() == 1:
         # Replace 'path/to/your/image.jpg' with the actual path to your image file
         img_path = 'Header.png'
-        img_width = 7 * inch  # Adjust as needed
+        img_width = letter[0]  # Full width of the page
         img_height = 1 * inch  # Adjust as needed
-        x = (letter[0] - img_width) / 2  # Center the image horizontally
-        y = letter[1] - doc.topMargin - img_height  # Position at the top of the page
-        canvas.drawImage(img_path, x, y, width=img_width, height=img_height)
+        canvas.drawImage(img_path, 0, letter[1] - img_height, width=img_width, height=img_height)
     
     # Add page number
     page_num = canvas.getPageNumber()
