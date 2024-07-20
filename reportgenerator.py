@@ -89,7 +89,7 @@ def create_category_content(df, category_name):
     content.append(title_table)
     content.append(Spacer(1, 10))
     
-    # Content
+    # Content1
     for _, row in df.iterrows():
         try:
             # Article Heading
