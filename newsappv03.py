@@ -57,7 +57,7 @@ def add_logo(logo_path, width, height):
 
 def display_dataframe(df):
     for i, row in df.iterrows():
-        st.markdown(f"•  **{row['Headings']}**")
+        st.markdown(f"•  **{row['Summary']}**")
         st.markdown(f"[Click Here to access News URL]({row['Link']})")
     
 def text_to_speech(text, key):
