@@ -96,7 +96,7 @@ def create_category_content(df, category_name):
             content.append(Spacer(1, 5))
 
             # Article Summary
-            link_style = ParagraphStyle('Normal', parent=styles['Normal'], fontSize=6, leading=10, textColor=colors.HexColor("#A20E37"))
+            link_style = ParagraphStyle('Normal', parent=styles['Normal'], fontSize=6, leading=10, textColor=colors.HexColor("#0000EE"))
             content.append(Paragraph(clean_text(row['Link']), link_style))
             
         except Exception as e:
