@@ -134,9 +134,10 @@ st.sidebar.image(add_logo(logo_path="PNBLogo.png", width=175, height=85), use_co
 st.sidebar.markdown('## NEWS - RBI/PIB <span style="font-size: medium">Latest</span>', unsafe_allow_html=True)
 
 # Radio button to select the news category
+# ('RBI News', 'PIB News', 'RBI Notification','Federal Central Bank','Bank of Japan')
 news_category = st.sidebar.radio(
-    "Select News Category",
-    ('RBI News', 'PIB News', 'RBI Notification','Federal Central Bank','Bank of Japan')
+    "Select News Category",  
+    ('RBI News', 'PIB News','Federal Central Bank')
 )
 
 # Options for displaying news
