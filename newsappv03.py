@@ -156,12 +156,12 @@ elif news_category == 'PIB News':
         "Select News Option",
         ('Gist of the News', 'News Headings with Summary')
     )
-elif news_category == 'RBI Notification':
-    display_dataframe(df4)
+#elif news_category == 'RBI Notification':
+#   display_dataframe(df4)
 elif news_category == 'Federal Central Bank':
     display_dataframe(df5)
-elif news_category == 'Bank of Japan':
-    display_dataframe(df6)
+#elif news_category == 'Bank of Japan':
+ #   display_dataframe(df6)
     
     
 
