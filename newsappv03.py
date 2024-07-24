@@ -227,15 +227,15 @@ elif news_category == 'PIB News':
 
 
 # Add this to your Streamlit app's sidebar
-if st.sidebar.button('Generate Full Report'):
-    pdf_buffer = generate_full_pdf(df1, df2, df3, df4, df5, df6)
-    if pdf_buffer:
-        st.sidebar.download_button(
-            label="Download Full Report PDF",
-            data=pdf_buffer,
-            file_name="full_news_report.pdf",
-            mime="application/pdf"
-        )
-    else:
-        st.sidebar.error("Failed to generate PDF. Please try again.")
+# if st.sidebar.button('Generate Full Report'):
+#     pdf_buffer = generate_full_pdf(df1, df2, df3, df4, df5, df6)
+#     if pdf_buffer:
+#         st.sidebar.download_button(
+#             label="Download Full Report PDF",
+#             data=pdf_buffer,
+#             file_name="full_news_report.pdf",
+#             mime="application/pdf"
+#         )
+#     else:
+#         st.sidebar.error("Failed to generate PDF. Please try again.")
     
